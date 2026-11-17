@@ -3,106 +3,229 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PokéVault - Immersive Collection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PokéVault | Ultimate Card Collection</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080c18;color:#f5f5ff;font-family:Arial,sans-serif}
-header{padding:18px 5%;background:#121a2e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:27px;font-weight:900;color:#ffdb71}
-.coins{background:#28334b;padding:12px 17px;border-radius:12px;color:#ffdb71;font-weight:bold}
-nav{padding:14px 5%;display:flex;gap:9px;flex-wrap:wrap}
-button{cursor:pointer;border:0;border-radius:10px;padding:12px 17px;background:#283650;color:white;font-weight:bold}
+body{margin:0;background:#090d18;color:#f3f5ff;font-family:Arial,sans-serif}
+header{background:#11182a;border-bottom:1px solid #293650;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-size:28px;font-weight:900;color:#ffdc75}
+.coins{background:#222e47;border:1px solid #59647c;padding:12px 17px;border-radius:12px;color:#ffdc75;font-weight:bold}
+nav{display:flex;gap:9px;padding:15px 5%;flex-wrap:wrap}
+button{border:0;border-radius:10px;padding:12px 17px;background:#273550;color:white;font-weight:bold;cursor:pointer}
 button:hover{filter:brightness(1.2)}
-.active{background:#f4c65a;color:#171b28}
-main{padding:15px 5% 45px}
+button:disabled{opacity:.5;cursor:not-allowed}
+nav button.active{background:#f1c45b;color:#171b28}
+main{padding:15px 5% 50px;max-width:1500px;margin:auto}
 .page{display:none}.page.active{display:block}
-.hero{text-align:center;padding:25px 0}
-.hero h1{font-size:40px;margin:10px}
-.gold{color:#ffdb71}
-.pack{max-width:310px;margin:20px auto;background:linear-gradient(145deg,#2d4c89,#17172e,#703a87);border:2px solid #d9b75b;border-radius:22px;text-align:center;padding:24px}
-.pack-icon{font-size:95px}
-.primary{background:linear-gradient(90deg,#e8b33e,#ffe18b);color:#151827}
-.small{font-size:12px;color:#aab6d0}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:17px;margin-top:20px}
-.card{background:linear-gradient(145deg,#263653,#111827);border:2px solid #65738d;border-radius:16px;padding:11px;overflow:hidden;position:relative}
-.card img{width:100%;height:165px;object-fit:contain;background:radial-gradient(circle,#ffffff25,transparent 70%)}
-.cardname{font-size:19px;font-weight:900;margin:7px 0}
-.hp{float:right;color:#ff8e8e;font-weight:bold}
-.attack{background:#101727;border-radius:8px;padding:9px;margin-top:8px;font-size:12px}
-.attack b:last-child{float:right;color:#ffdb71}
-.Common{border-color:#65738d}.Uncommon{border-color:#53bd8c}
-.Rare{border-color:#65aaff}.Ultra{border-color:#b58aff;box-shadow:0 0 14px #a66cff55}
-.Legendary{border-color:#ffd15a;box-shadow:0 0 17px #ffcb4c77}
-.Shiny{border-color:#ff72db;box-shadow:0 0 19px #ff72db88}
-.Star1{border:2px solid #6de2ff;box-shadow:0 0 18px #48d9ff88}
-.Star2{border:2px solid #c58aff;box-shadow:0 0 22px #b45dff99}
-.Star3{border:2px solid #ffe58b;box-shadow:0 0 27px #ffe58baa;background:linear-gradient(145deg,#684b20,#2c2150,#174b68)}
-.rarity{font-size:11px;font-weight:900;letter-spacing:1px;color:#ffdf85}
-.filters{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
-input,select{padding:12px;border-radius:9px;border:1px solid #43516d;background:#172239;color:white}
-.pageTitle{margin-top:25px}
-#opening{display:none;text-align:center;margin:25px 0}
-.reveal{max-width:370px;margin:20px auto;animation:reveal .6s ease}
-@keyframes reveal{from{opacity:0;transform:scale(.65) rotateY(40deg)}to{opacity:1;transform:scale(1) rotateY(0)}}
-.reveal .card img{height:230px}
-.storybtn{width:100%;margin-top:10px;background:#57417e}
-.modal{display:none;position:fixed;inset:0;background:#050817f5;z-index:10;overflow:auto;padding:22px;align-items:center;justify-content:center}
+.hero{text-align:center;padding:30px 10px}
+.hero h1{font-size:42px;margin:8px}
+.hero p{color:#aebbd4;line-height:1.6}
+.gold{color:#ffdc75}
+.small{font-size:12px;color:#aab7d0}
+.section-title{margin-top:28px}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:16px;margin-top:20px}
+.series-card{background:linear-gradient(145deg,#253657,#111827);border:1px solid #435473;border-radius:16px;padding:17px;transition:.2s}
+.series-card:hover{transform:translateY(-3px);border-color:#e8c45e}
+.series-icon{font-size:38px}
+.series-card h3{margin:10px 0 5px}
+.series-card p{color:#aab7d0;font-size:13px;line-height:1.5}
+.series-card select{width:100%;margin:8px 0}
+.series-card button{width:100%;background:linear-gradient(90deg,#e7b33f,#ffdf85);color:#171827}
+.pack-price{text-align:center;margin-top:10px;color:#ffdc75;font-weight:bold}
+.pack-count{text-align:center;font-size:12px;color:#aab7d0;margin-top:5px}
+select,input{background:#172239;color:white;border:1px solid #43516d;border-radius:9px;padding:12px;font-size:14px}
+select{width:100%}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.filters input{flex:1;min-width:160px}
+.filters select{width:auto;min-width:155px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:17px;margin-top:20px}
+.pokemon-card{position:relative;overflow:hidden;border-radius:16px;padding:11px;background:linear-gradient(145deg,#263653,#111827);border:2px solid #65738d;min-width:0;transition:.2s}
+.pokemon-card:hover{transform:translateY(-4px)}
+.pokemon-card img{width:100%;height:160px;object-fit:contain;background:radial-gradient(circle,#ffffff26,transparent 70%)}
+.card-top{display:flex;justify-content:space-between;gap:5px;font-size:12px;font-weight:bold}
+.hp{color:#ff9999}
+.card-name{font-size:19px;font-weight:900;margin:8px 0}
+.type{display:inline-block;background:#40516d;border-radius:20px;padding:5px 9px;font-size:11px;text-transform:uppercase}
+.attack{margin-top:9px;background:#101727;padding:10px;border-radius:8px;font-size:12px;min-height:34px}
+.attack strong{float:right;color:#ffdc75}
+.rarity{font-size:11px;letter-spacing:1px;font-weight:900;margin:10px 0;color:#ffdc75}
+.Common{border-color:#68758a}
+.Uncommon{border-color:#54b98a}
+.Rare{border-color:#64a9ff}
+.Ultra{border-color:#b28aff;box-shadow:0 0 14px #9e68ff55}
+.Legendary{border-color:#ffc94d;box-shadow:0 0 19px #ffc94d66}
+.Shiny{border-color:#ff65d5;box-shadow:0 0 20px #ff65d588;background:linear-gradient(145deg,#542d69,#14243e,#673d6b)}
+.Star1{border-color:#64dfff;box-shadow:0 0 18px #48d9ff77}
+.Star2{border-color:#c58aff;box-shadow:0 0 22px #b45dff88;background:linear-gradient(145deg,#39265e,#172b48)}
+.Star3{border-color:#ffe58b;box-shadow:0 0 27px #ffe58baa;background:linear-gradient(145deg,#684b20,#2c2150,#174b68)}
+.story-button{width:100%;margin-top:7px;background:#57417e}
+.primary{background:linear-gradient(90deg,#e9ad36,#ffdf7b);color:#171827}
+#opening{display:none;text-align:center;margin:30px 0}
+.reveal{max-width:360px;margin:20px auto;animation:appear .45s ease}
+.reveal .pokemon-card img{height:230px}
+@keyframes appear{from{opacity:0;transform:scale(.7) rotateY(35deg)}to{opacity:1;transform:scale(1) rotateY(0)}}
+.modal{display:none;position:fixed;inset:0;background:#050817f5;z-index:20;overflow:auto;padding:20px;align-items:center;justify-content:center}
 .modal.show{display:flex}
-.storybox{width:min(680px,100%);background:#151d32;border:2px solid #ffe18b;border-radius:20px;overflow:hidden;box-shadow:0 0 50px #e3bb5d44}
-.storybox img{width:100%;height:310px;object-fit:cover}
-.storytext{padding:22px}
-.storytext h1{color:#ffdb71}
-.storytext p{line-height:1.65;color:#d2d8e8}
-.dexrow{padding:13px;margin:8px 0;background:#18243a;border-radius:9px}
+.story-box{width:min(700px,100%);background:#151e33;border:2px solid #ffe18b;border-radius:20px;overflow:hidden;box-shadow:0 0 45px #e3bb5d55}
+.story-box img{width:100%;height:300px;object-fit:contain;background:radial-gradient(circle,#ffffff22,#101729)}
+.story-content{padding:22px}
+.story-content h2{font-size:27px;color:#ffdc75}
+.story-content p{font-size:16px;line-height:1.7;color:#d7ddec}
+.dex-row{padding:13px;margin:8px 0;background:#18243a;border-radius:9px;display:flex;justify-content:space-between;gap:10px}
 .empty{text-align:center;color:#aab6d0;padding:35px}
+footer{text-align:center;color:#77849d;padding:25px;font-size:12px}
+@media(max-width:600px){
+ .hero h1{font-size:32px}
+ .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .pokemon-card img{height:125px}
+ .card-name{font-size:15px}
+ .pokemon-card{padding:8px}
+ .story-box img{height:220px}
+}
 </style>
 </head>
 <body>
+
 <header>
  <div class="logo">⚡ PokéVault</div>
- <div class="coins">🪙 <span id="coins">200,000,000,000</span></div>
+ <div class="coins">🪙 <span id="coinDisplay">200,000,000,000</span></div>
 </header>
+
 <nav>
  <button class="active" onclick="showPage('home',this)">🏠 Home</button>
  <button onclick="showPage('collection',this)">🎴 Collection</button>
  <button onclick="showPage('dex',this)">📖 Pokédex</button>
 </nav>
+
 <main>
+
 <section id="home" class="page active">
  <div class="hero">
   <h1>Welcome to <span class="gold">PokéVault</span></h1>
-  <p>Discover Pokémon. Find incredible cards. Unlock their stories.</p>
-  <p class="gold">✨ Your adventure starts here.</p>
+  <p>Discover amazing Pokémon cards. Collect rare cards. Unlock incredible stories.</p>
+  <p class="gold">✨ Your collection. Your adventure.</p>
+  <p>Starting balance: <strong class="gold">200 BILLION COINS</strong></p>
  </div>
- <div class="pack">
-  <div class="pack-icon">🎴</div>
-  <h2>IMMERSIVE BOOSTER</h2>
-  <p>10 cards • Special story cards possible</p>
-  <p class="gold">100,000 coins</p>
-  <button class="primary" onclick="openPack()">OPEN BOOSTER PACK</button>
+
+ <h2 class="section-title">🎴 Booster Pack Shop</h2>
+ <p class="small">Choose your favorite Pokémon TCG era and expansion. Every pack contains 10 cards.</p>
+
+ <div class="shop-grid">
+
+  <div class="series-card">
+   <div class="series-icon">🔥</div>
+   <h3>Mega Evolution Series</h3>
+   <p>Explore the Mega Evolution era and discover powerful Pokémon.</p>
+   <select id="megaSet">
+    <option>Mega Evolution Base</option>
+    <option>Phantasmal Flames</option>
+    <option>Ascended Heroes</option>
+    <option>Delta Reign</option>
+   </select>
+   <button onclick="openPack('mega','megaSet')">OPEN MEGA PACK</button>
+   <div class="pack-price">🪙 10 Coins</div>
+   <div class="pack-count">10 cards per pack</div>
+  </div>
+
+  <div class="series-card">
+   <div class="series-icon">💎</div>
+   <h3>Scarlet & Violet Series</h3>
+   <p>Explore modern Pokémon and special illustration cards.</p>
+   <select id="svSet">
+    <option>Scarlet & Violet Base</option>
+    <option>Prismatic Evolutions</option>
+    <option>Journey Together</option>
+    <option>Black Bolt</option>
+    <option>White Flare</option>
+   </select>
+   <button onclick="openPack('sv','svSet')">OPEN SCARLET & VIOLET PACK</button>
+   <div class="pack-price">🪙 10 Coins</div>
+   <div class="pack-count">10 cards per pack</div>
+  </div>
+
+  <div class="series-card">
+   <div class="series-icon">⚔️</div>
+   <h3>Sword & Shield Series</h3>
+   <p>Discover popular Pokémon from the Sword & Shield era.</p>
+   <select id="swshSet">
+    <option>Sword & Shield Base</option>
+    <option>Rebel Clash</option>
+    <option>Evolving Skies</option>
+    <option>Brilliant Stars</option>
+    <option>Crown Zenith</option>
+   </select>
+   <button onclick="openPack('swsh','swshSet')">OPEN SWORD & SHIELD PACK</button>
+   <div class="pack-price">🪙 10 Coins</div>
+   <div class="pack-count">10 cards per pack</div>
+  </div>
+
+  <div class="series-card">
+   <div class="series-icon">🌙</div>
+   <h3>Sun & Moon Series</h3>
+   <p>Find beautiful Pokémon from the Sun & Moon era.</p>
+   <select id="smSet">
+    <option>Hidden Fates</option>
+    <option>Cosmic Eclipse</option>
+   </select>
+   <button onclick="openPack('sm','smSet')">OPEN SUN & MOON PACK</button>
+   <div class="pack-price">🪙 10 Coins</div>
+   <div class="pack-count">10 cards per pack</div>
+  </div>
+
+  <div class="series-card">
+   <div class="series-icon">⚡</div>
+   <h3>XY & Black & White</h3>
+   <p>Visit nostalgic Pokémon generations and classic favorites.</p>
+   <select id="xybwSet">
+    <option>XY Evolutions</option>
+    <option>Legendary Treasures</option>
+   </select>
+   <button onclick="openPack('xybw','xybwSet')">OPEN CLASSIC PACK</button>
+   <div class="pack-price">🪙 10 Coins</div>
+   <div class="pack-count">10 cards per pack</div>
+  </div>
+
+  <div class="series-card">
+   <div class="series-icon">👑</div>
+   <h3>Legacy & WotC Era</h3>
+   <p>Discover classic Pokémon and legendary old-school favorites.</p>
+   <select id="legacySet">
+    <option>Base Set</option>
+    <option>Jungle</option>
+    <option>Fossil</option>
+    <option>Team Rocket</option>
+    <option>EX Era</option>
+    <option>HeartGold & SoulSilver</option>
+   </select>
+   <button onclick="openPack('legacy','legacySet')">OPEN LEGACY PACK</button>
+   <div class="pack-price">🪙 10 Coins</div>
+   <div class="pack-count">10 cards per pack</div>
+  </div>
+
  </div>
+
  <div id="opening">
-  <h2 id="openingTitle">Your pack is ready!</h2>
+  <h2 id="openingTitle">Your cards are ready!</h2>
   <p id="openingCount"></p>
   <div class="reveal" id="revealCard"></div>
-  <button class="primary" id="nextBtn" onclick="revealNext()">REVEAL NEXT CARD</button>
+  <button class="primary" id="revealButton" onclick="revealNext()">REVEAL NEXT CARD</button>
   <button onclick="revealAll()">REVEAL ALL</button>
   <div id="packResults" class="cards"></div>
  </div>
 </section>
 
 <section id="collection" class="page">
- <h1 class="pageTitle">🎴 My Collection</h1>
- <p id="stats" class="small"></p>
+ <h1>🎴 My Collection</h1>
+ <p id="collectionStats" class="small"></p>
  <div class="filters">
   <input id="search" placeholder="Search Pokémon..." oninput="renderCollection()">
   <select id="filter" onchange="renderCollection()">
    <option value="All">All rarities</option>
-   <option value="Star3">3-Star Immersive</option>
-   <option value="Star2">2-Star Special</option>
-   <option value="Star1">1-Star Illustration</option>
-   <option value="Shiny">Shiny</option>
+   <option value="Star3">★★★ Immersive Rare</option>
+   <option value="Star2">★★ Special Illustration</option>
+   <option value="Star1">★ Illustration Rare</option>
+   <option value="Shiny">Shiny Rare</option>
    <option value="Legendary">Legendary</option>
    <option value="Ultra">Ultra Rare</option>
    <option value="Rare">Rare</option>
@@ -110,7 +233,7 @@ input,select{padding:12px;border-radius:9px;border:1px solid #43516d;background:
    <option value="Common">Common</option>
   </select>
   <select id="sort" onchange="renderCollection()">
-   <option value="rarity">Best rarity first</option>
+   <option value="rarity">Highest rarity first</option>
    <option value="name">Name A-Z</option>
    <option value="hp">Highest HP</option>
   </select>
@@ -119,18 +242,20 @@ input,select{padding:12px;border-radius:9px;border:1px solid #43516d;background:
 </section>
 
 <section id="dex" class="page">
- <h1 class="pageTitle">📖 Pokédex</h1>
+ <h1>📖 Pokédex</h1>
+ <p class="small">Every Pokémon you discover will appear here.</p>
  <input id="dexSearch" placeholder="Search discovered Pokémon..." oninput="renderDex()">
  <div id="dexList"></div>
 </section>
+
 </main>
 
 <div class="modal" id="storyModal" onclick="if(event.target===this)closeStory()">
- <div class="storybox">
-  <img id="storyImage" src="" alt="Story artwork">
-  <div class="storytext">
+ <div class="story-box">
+  <img id="storyImage" src="" alt="Pokémon story artwork">
+  <div class="story-content">
    <div class="rarity" id="storyRarity"></div>
-   <h1 id="storyTitle"></h1>
+   <h2 id="storyTitle"></h2>
    <p id="storyDescription"></p>
    <p class="small" id="storyCard"></p>
    <button class="primary" onclick="closeStory()">CLOSE STORY</button>
@@ -138,191 +263,356 @@ input,select{padding:12px;border-radius:9px;border:1px solid #43516d;background:
  </div>
 </div>
 
+<footer>
+ PokéVault • Fan-made Pokémon collecting game. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.
+</footer>
+
 <script>
-const START=200000000000;
-const COST=100000;
-const COINKEY="pc_coins";
-const CARDKEY="pc_collection";
-const VERSIONKEY="pc_story_upgrade_v1";
+const STARTING_COINS = 200000000000;
+const PACK_PRICE = 10;
+const CARDS_PER_PACK = 10;
 
-let coins=Number(localStorage.getItem(COINKEY));
-let collection=JSON.parse(localStorage.getItem(CARDKEY)||"[]");
-let packCards=[],revealIndex=0,busy=false;
+const COIN_KEY = "pc_coins";
+const COLLECTION_KEY = "pc_collection";
 
-if(localStorage.getItem(VERSIONKEY)!=="yes"){
- coins=START;
- localStorage.setItem(VERSIONKEY,"yes");
+let coins;
+let collection = [];
+let packCards = [];
+let revealIndex = 0;
+let busy = false;
+
+try {
+ coins = Number(localStorage.getItem(COIN_KEY));
+ collection = JSON.parse(localStorage.getItem(COLLECTION_KEY) || "[]");
+ if (!Array.isArray(collection)) collection = [];
+} catch(e) {
+ coins = STARTING_COINS;
+ collection = [];
 }
-if(!Number.isFinite(coins)||coins<0)coins=START;
 
-const stories={
+if (!Number.isFinite(coins) || localStorage.getItem(COIN_KEY) === null) {
+ coins = STARTING_COINS;
+}
+
+const seriesRanges = {
+ mega:[1,1025],
+ sv:[906,1025],
+ swsh:[810,905],
+ sm:[722,809],
+ xybw:[494,721],
+ legacy:[1,493]
+};
+
+const rarityOrder = [
+ "Star3","Star2","Star1","Shiny","Legendary",
+ "Ultra","Rare","Uncommon","Common"
+];
+
+const storyTemplates = {
  fire:[
- ["The Guardian of the Burning Sky","Above the ancient volcano, this Pokémon watches over a hidden kingdom. As the first light touches the mountains, its flames awaken and illuminate the clouds."],
- ["A Flame That Never Sleeps","Deep inside the mountain, a tiny flame shines in the darkness. This Pokémon has guarded it for generations, protecting a secret older than the kingdom itself."]
+  ["Guardian of the Burning Sky","High above the ancient volcano, this Pokémon watches over a hidden kingdom. Its flames light the sky as the sun rises over the mountains."],
+  ["The Last Flame","Deep inside the mountain, a mysterious flame has burned for centuries. This Pokémon protects it from anyone who would disturb its power."]
  ],
  water:[
- ["The Secret of the Moonlit Ocean","Beneath a silver moon, this Pokémon swims through glowing waves. Sailors tell stories of a mysterious light guiding lost travelers safely home."],
- ["The Keeper of the Deep","In a forgotten underwater city, this Pokémon protects the ancient treasures hidden beneath the coral towers."]
+  ["Secret of the Moonlit Ocean","Under a glowing moon, this Pokémon swims through sparkling waves. Its mysterious light guides lost travelers back home."],
+  ["Guardian of the Deep","Beneath the ocean lies a forgotten kingdom. This Pokémon watches over its secrets and protects the creatures living there."]
  ],
  electric:[
- ["The City of a Thousand Lights","During a stormy night, this Pokémon runs across the rooftops, restoring power to the sleeping city one spark at a time."],
- ["A Spark of Friendship","After finding a lost friend in the forest, this Pokémon lights the path home with a brilliant electric glow."]
+  ["City of a Thousand Lights","During a stormy night, this Pokémon races across the rooftops, bringing light back to a sleeping city."],
+  ["A Spark of Friendship","A bright spark leads this Pokémon through a dark forest, where an unexpected friend is waiting."]
  ],
  grass:[
- ["The Forest That Remembered","In a forest untouched for centuries, this Pokémon watches over the oldest trees and the creatures that live among them."],
- ["The Flower of Dawn","Every morning, the flowers bloom when this Pokémon passes. The forest believes it carries the spirit of spring."]
+  ["The Forest That Remembered","In a forest untouched for centuries, this Pokémon watches over the oldest trees and the creatures that call it home."],
+  ["The Flower of Dawn","Every morning, the flowers bloom as this Pokémon passes through the forest, bringing a new beginning."]
  ],
  default:[
- ["A Journey Beyond the Horizon","Far beyond the familiar mountains, this Pokémon explores a world filled with mysteries. Every step brings a new discovery."],
- ["The Last Light of the Valley","As the sun sets over the valley, this Pokémon stands on a hilltop, watching over its friends and the home they share."]
+  ["Journey Beyond the Horizon","Far beyond familiar mountains, this Pokémon explores a world filled with mysteries. Every step brings another discovery."],
+  ["The Last Light of the Valley","As the sun sets, this Pokémon watches over the valley and the friends who call it home."]
  ]
 };
 
-const rank=["Star3","Star2","Star1","Shiny","Legendary","Ultra","Rare","Uncommon","Common"];
+function save() {
+ localStorage.setItem(COIN_KEY,String(coins));
+ localStorage.setItem(COLLECTION_KEY,JSON.stringify(collection));
+ updateCoins();
+}
 
-function save(){
- localStorage.setItem(COINKEY,String(coins));
- localStorage.setItem(CARDKEY,JSON.stringify(collection));
- document.getElementById("coins").textContent=coins.toLocaleString("en-US");
+function updateCoins() {
+ document.getElementById("coinDisplay").textContent =
+  coins.toLocaleString("en-US");
 }
-function showPage(id,btn){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+
+function showPage(id,button) {
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
  document.getElementById(id).classList.add("active");
- document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
- btn.classList.add("active");
- if(id==="collection")renderCollection();
- if(id==="dex")renderDex();
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ if(id==="collection") renderCollection();
+ if(id==="dex") renderDex();
 }
-function rarityRoll(){
- let n=Math.random()*100;
- if(n<0.12)return "Star3";
- if(n<0.7)return "Star2";
- if(n<2.5)return "Star1";
- if(n<5)return "Shiny";
- if(n<9)return "Legendary";
- if(n<17)return "Ultra";
- if(n<34)return "Rare";
- if(n<57)return "Uncommon";
+
+function escapeHTML(value) {
+ return String(value).replace(/[&<>"']/g,ch=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[ch]));
+}
+
+function rollRarity() {
+ const n=Math.random()*100;
+ if(n<0.12) return "Star3";
+ if(n<0.7) return "Star2";
+ if(n<2.5) return "Star1";
+ if(n<5) return "Shiny";
+ if(n<9) return "Legendary";
+ if(n<17) return "Ultra";
+ if(n<34) return "Rare";
+ if(n<57) return "Uncommon";
  return "Common";
 }
-function getStory(type){
- let group=stories[type]||stories.default;
- return group[Math.floor(Math.random()*group.length)];
+
+function getStory(type,name) {
+ const group=storyTemplates[type] || storyTemplates.default;
+ const selected=group[Math.floor(Math.random()*group.length)];
+ return [
+  selected[0]+" — "+name,
+  selected[1]
+ ];
 }
-function randomDamage(){return Math.floor(Math.random()*100)+30}
-async function getPokemon(id){
- let r=await fetch("https://pokeapi.co/api/v2/pokemon/"+id);
- if(!r.ok)throw Error("Pokémon loading failed");
- let p=await r.json();
- let type=p.types[0].type.name;
- let artwork=p.sprites.other["official-artwork"].front_default||p.sprites.front_default;
- let hp=Math.max(30,Math.round(p.stats.find(s=>s.stat.name==="hp").base_stat*2.2));
- let moves=p.moves.map(m=>m.move.name.replaceAll("-"," "));
- let special=rarityRoll();
- let story=["Star1","Star2","Star3"].includes(special)?getStory(type):null;
+
+function randomDamage() {
+ return Math.floor(Math.random()*100)+30;
+}
+
+async function getPokemon(id,expansion,series) {
+ const response=await fetch("https://pokeapi.co/api/v2/pokemon/"+id);
+ if(!response.ok) throw new Error("Could not load Pokémon");
+ const p=await response.json();
+
+ const type=p.types[0].type.name;
+ const art=p.sprites.other["official-artwork"].front_default ||
+           p.sprites.front_default;
+
+ const hp=Math.max(30,Math.round(
+  p.stats.find(s=>s.stat.name==="hp").base_stat*2.2
+ ));
+
+ const moves=p.moves.map(m=>m.move.name.replaceAll("-"," "));
+ const attack1=moves[Math.floor(Math.random()*moves.length)] || "Quick Attack";
+ const attack2=moves[Math.floor(Math.random()*moves.length)] || "Power Blast";
+
+ const rarity=rollRarity();
+ const story=["Star1","Star2","Star3"].includes(rarity)
+  ?getStory(type,p.name):null;
+
  return {
-  id:p.id,name:p.name,image:artwork,type:type,
+  id:p.id,
+  name:p.name,
+  image:art,
+  hp:hp,
+  type:type,
   types:p.types.map(t=>t.type.name),
-  hp:hp,attack1:moves[Math.floor(Math.random()*moves.length)]||"Quick Attack",
-  damage1:randomDamage(),attack2:moves[Math.floor(Math.random()*moves.length)]||"Power Blast",
-  damage2:randomDamage(),rarity:special,story:story,
+  attack1:attack1,
+  damage1:randomDamage(),
+  attack2:attack2,
+  damage2:randomDamage(),
+  rarity:rarity,
+  story:story,
+  expansion:expansion,
+  series:series,
   cardId:"PV-"+p.id+"-"+Math.random().toString(36).slice(2,7).toUpperCase()
  };
 }
-function rarityName(r){
- return {Star3:"★★★ IMMERSIVE RARE",Star2:"★★ SPECIAL ILLUSTRATION",Star1:"★ ILLUSTRATION RARE",Shiny:"SHINY RARE",Legendary:"LEGENDARY",Ultra:"ULTRA RARE",Rare:"RARE",Uncommon:"UNCOMMON",Common:"COMMON"}[r]||r;
+
+function rarityName(r) {
+ return {
+  Star3:"★★★ IMMERSIVE RARE",
+  Star2:"★★ SPECIAL ILLUSTRATION",
+  Star1:"★ ILLUSTRATION RARE",
+  Shiny:"SHINY RARE",
+  Legendary:"LEGENDARY",
+  Ultra:"ULTRA RARE",
+  Rare:"RARE",
+  Uncommon:"UNCOMMON",
+  Common:"COMMON"
+ }[r] || r;
 }
-function cardHTML(c){
- return `<div class="card ${c.rarity}">
- <div><b>#${String(c.id).padStart(3,"0")}</b><span class="hp">♥ ${c.hp} HP</span></div>
- <img src="${c.image}" alt="${c.name}">
- <div class="cardname">${c.name.toUpperCase()}</div>
- <span class="small">${c.types.join(" / ").toUpperCase()}</span>
- <div class="attack"><b>${c.attack1}</b><b>${c.damage1}</b></div>
- <div class="attack"><b>${c.attack2}</b><b>${c.damage2}</b></div>
- <p class="rarity">${rarityName(c.rarity)}</p>
- ${c.story?`<button class="storybtn" onclick="showStory('${c.cardId}')">📖 READ CARD STORY</button>`:""}
- <p class="small">${c.cardId}</p>
+
+function cardHTML(c) {
+ const storyButton=c.story
+  ?`<button class="story-button" onclick="showStory('${c.cardId}')">📖 READ CARD STORY</button>`
+  :"";
+
+ return `
+ <div class="pokemon-card ${c.rarity}">
+  <div class="card-top">
+   <span>#${String(c.id).padStart(3,"0")}</span>
+   <span class="hp">♥ ${c.hp} HP</span>
+  </div>
+  <img src="${c.image}" alt="${escapeHTML(c.name)}" loading="lazy">
+  <div class="card-name">${escapeHTML(c.name.toUpperCase())}</div>
+  <span class="type">${escapeHTML(c.types.join(" / "))}</span>
+  <div class="attack"><b>${escapeHTML(c.attack1)}</b><strong>${c.damage1}</strong></div>
+  <div class="attack"><b>${escapeHTML(c.attack2)}</b><strong>${c.damage2}</strong></div>
+  <p class="rarity">${rarityName(c.rarity)}</p>
+  ${storyButton}
+  <p class="small">${escapeHTML(c.expansion || "PokéVault Collection")}</p>
+  <p class="small">${escapeHTML(c.cardId)}</p>
  </div>`;
 }
-async function openPack(){
- if(busy)return;
- if(coins<COST){alert("Not enough coins!");return}
+
+async function openPack(series,selectId) {
+ if(busy) return;
+
+ if(coins<PACK_PRICE) {
+  alert("You need 10 coins to open this pack!");
+  return;
+ }
+
+ const expansion=document.getElementById(selectId).value;
+ const [minId,maxId]=seriesRanges[series];
+
  busy=true;
- coins-=COST;save();
- document.getElementById("opening").style.display="block";
- document.getElementById("revealCard").innerHTML="<h2>✨ Opening your pack...</h2>";
+ coins-=PACK_PRICE;
+ save();
+
+ const opening=document.getElementById("opening");
+ opening.style.display="block";
+ document.getElementById("openingTitle").textContent="✨ Opening "+expansion+"...";
+ document.getElementById("openingCount").textContent="Preparing your 10 cards...";
+ document.getElementById("revealCard").innerHTML="<h2>🎴 Opening your booster pack...</h2>";
  document.getElementById("packResults").innerHTML="";
- document.getElementById("nextBtn").disabled=true;
- document.getElementById("nextBtn").textContent="LOADING...";
- packCards=[];revealIndex=0;
- try{
-  let ids=Array.from({length:10},()=>Math.floor(Math.random()*1025)+1);
-  for(let id of ids)packCards.push(await getPokemon(id));
-  collection.push(...packCards);save();
-  document.getElementById("openingTitle").textContent="Your cards are ready!";
-  document.getElementById("nextBtn").disabled=false;
+ document.getElementById("revealButton").disabled=true;
+ document.getElementById("revealButton").textContent="LOADING...";
+ packCards=[];
+ revealIndex=0;
+
+ try {
+  const ids=Array.from({length:CARDS_PER_PACK},()=>
+   Math.floor(Math.random()*(maxId-minId+1))+minId
+  );
+
+  const results=await Promise.all(
+   ids.map(id=>getPokemon(id,expansion,series))
+  );
+
+  packCards=results;
+  collection.push(...packCards);
+  save();
+
+  document.getElementById("openingTitle").textContent=expansion+" • Booster Pack";
+  document.getElementById("revealButton").disabled=false;
   revealNext();
- }catch(e){
-  coins+=COST;save();busy=false;
-  document.getElementById("revealCard").innerHTML="<p>Could not load cards. Your coins were returned. Try again.</p>";
-  document.getElementById("nextBtn").textContent="TRY AGAIN";
-  document.getElementById("nextBtn").disabled=false;
+  opening.scrollIntoView({behavior:"smooth",block:"start"});
+
+ } catch(error) {
+  coins+=PACK_PRICE;
+  save();
+  busy=false;
+  document.getElementById("revealCard").innerHTML=
+   "<h3>Could not load the cards.</h3><p>Your 10 coins were returned. Please try again.</p>";
+  document.getElementById("revealButton").disabled=true;
+  document.getElementById("revealButton").textContent="TRY AGAIN";
  }
 }
-function revealNext(){
- if(revealIndex>=packCards.length){finishPack();return}
- let c=packCards[revealIndex++];
- document.getElementById("revealCard").innerHTML=cardHTML(c);
- document.getElementById("openingCount").textContent="Card "+revealIndex+" of 10";
- document.getElementById("nextBtn").textContent=revealIndex===10?"FINISH PACK":"REVEAL NEXT CARD";
+
+function revealNext() {
+ if(revealIndex>=packCards.length) {
+  finishPack();
+  return;
+ }
+
+ const card=packCards[revealIndex];
+ document.getElementById("revealCard").innerHTML=cardHTML(card);
+ revealIndex++;
+
+ document.getElementById("openingCount").textContent=
+  "Card "+revealIndex+" of "+CARDS_PER_PACK;
+
+ document.getElementById("revealButton").textContent=
+  revealIndex===CARDS_PER_PACK?"FINISH PACK":"REVEAL NEXT CARD";
+
+ if(revealIndex===CARDS_PER_PACK) {
+  document.getElementById("revealButton").onclick=finishPack;
+ }
 }
-function revealAll(){
- if(!packCards.length)return;
- revealIndex=10;
+
+function revealAll() {
+ if(!packCards.length) return;
+ revealIndex=packCards.length;
  document.getElementById("revealCard").innerHTML="";
  document.getElementById("openingCount").textContent="All 10 cards revealed!";
- document.getElementById("packResults").innerHTML=packCards.map(cardHTML).join("");
  finishPack();
 }
-function finishPack(){
+
+function finishPack() {
  document.getElementById("revealCard").innerHTML="";
  document.getElementById("openingCount").textContent="All 10 cards collected!";
- document.getElementById("nextBtn").textContent="PACK OPENED ✓";
- document.getElementById("nextBtn").disabled=true;
+ document.getElementById("revealButton").textContent="PACK OPENED ✓";
+ document.getElementById("revealButton").disabled=true;
+ document.getElementById("revealButton").onclick=revealNext;
  document.getElementById("packResults").innerHTML=packCards.map(cardHTML).join("");
  busy=false;
 }
-function showStory(cardId){
- let c=collection.find(x=>x.cardId===cardId)||packCards.find(x=>x.cardId===cardId);
- if(!c||!c.story)return;
- document.getElementById("storyImage").src=c.image;
- document.getElementById("storyRarity").textContent=rarityName(c.rarity);
- document.getElementById("storyTitle").textContent=c.story[0];
- document.getElementById("storyDescription").textContent=c.story[1];
- document.getElementById("storyCard").textContent=c.name.toUpperCase()+" • "+c.cardId;
+
+function showStory(cardId) {
+ const card=collection.find(c=>c.cardId===cardId);
+ if(!card || !card.story) return;
+
+ document.getElementById("storyImage").src=card.image;
+ document.getElementById("storyRarity").textContent=rarityName(card.rarity);
+ document.getElementById("storyTitle").textContent=card.story[0];
+ document.getElementById("storyDescription").textContent=card.story[1];
+ document.getElementById("storyCard").textContent=
+  card.name.toUpperCase()+" • "+card.cardId+" • "+card.expansion;
+
  document.getElementById("storyModal").classList.add("show");
 }
-function closeStory(){document.getElementById("storyModal").classList.remove("show")}
-function renderCollection(){
- let q=document.getElementById("search").value.toLowerCase();
- let f=document.getElementById("filter").value;
- let s=document.getElementById("sort").value;
- let arr=collection.filter(c=>c.name.includes(q)&&(f==="All"||c.rarity===f));
- arr.sort((a,b)=>{
-  if(s==="name")return a.name.localeCompare(b.name);
-  if(s==="hp")return b.hp-a.hp;
-  return rank.indexOf(a.rarity)-rank.indexOf(b.rarity);
+
+function closeStory() {
+ document.getElementById("storyModal").classList.remove("show");
+}
+
+function renderCollection() {
+ const search=document.getElementById("search").value.toLowerCase();
+ const filter=document.getElementById("filter").value;
+ const sort=document.getElementById("sort").value;
+
+ let cards=collection.filter(c=>
+  c.name.includes(search) &&
+  (filter==="All" || c.rarity===filter)
+ );
+
+ cards.sort((a,b)=>{
+  if(sort==="name") return a.name.localeCompare(b.name);
+  if(sort==="hp") return b.hp-a.hp;
+  return rarityOrder.indexOf(a.rarity)-rarityOrder.indexOf(b.rarity);
  });
- document.getElementById("stats").textContent=collection.length+" cards • "+new Set(collection.map(c=>c.id)).size+" different Pokémon";
- document.getElementById("collectionCards").innerHTML=arr.length?arr.map(cardHTML).join(""):'<div class="empty">No cards found. Open a pack to collect Pokémon!</div>';
+
+ const unique=new Set(collection.map(c=>c.id)).size;
+
+ document.getElementById("collectionStats").textContent=
+  collection.length+" total cards • "+unique+" different Pokémon discovered";
+
+ document.getElementById("collectionCards").innerHTML=cards.length
+  ?cards.map(cardHTML).join("")
+  :'<div class="empty">No cards found. Visit the Booster Shop to collect some!</div>';
 }
-function renderDex(){
- let q=document.getElementById("dexSearch").value.toLowerCase();
- let unique=[...new Map(collection.map(c=>[c.id,c])).values()].filter(c=>c.name.includes(q)||String(c.id).includes(q));
- document.getElementById("dexList").innerHTML=unique.length?unique.map(c=>`<div class="dexrow">#${String(c.id).padStart(3,"0")} — ${c.name.toUpperCase()} ✓ Discovered</div>`).join(""):'<div class="empty">Your Pokédex is waiting for its first discovery!</div>';
+
+function renderDex() {
+ const q=document.getElementById("dexSearch").value.toLowerCase();
+ const unique=[...new Map(collection.map(c=>[c.id,c])).values()]
+  .filter(c=>c.name.includes(q)||String(c.id).includes(q));
+
+ document.getElementById("dexList").innerHTML=unique.length
+  ?unique.map(c=>`
+   <div class="dex-row">
+    <span>#${String(c.id).padStart(3,"0")} • ${escapeHTML(c.name.toUpperCase())}</span>
+    <span>✓ Discovered</span>
+   </div>`).join("")
+  :'<div class="empty">Your Pokédex is waiting for its first discovery!</div>';
 }
-save();
+
+updateCoins();
 </script>
 </body>
 </html>
