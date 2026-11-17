@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PokéCollect</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#101323;
+ color:white;
+}
+header{
+ background:linear-gradient(120deg,#30206c,#175b91);
+ padding:22px;
+ text-align:center;
+}
+header h1{margin:0;font-size:30px}
+header p{color:#d7d9ff;margin-bottom:0}
+.stats{
+ display:flex;justify-content:center;gap:12px;
+ flex-wrap:wrap;padding:15px;
+}
+.stat{
+ background:#202943;padding:12px 20px;
+ border-radius:12px;font-weight:bold;
+}
+nav{
+ display:flex;justify-content:center;flex-wrap:wrap;
+ gap:8px;padding:12px;
+ background:#171c30;
+ position:sticky;top:0;z-index:5;
+}
+nav button,.action{
+ border:0;border-radius:10px;padding:12px 17px;
+ background:#303b5b;color:white;
+ cursor:pointer;font-weight:bold;
+}
+nav button.active{background:#7555ed}
+button:hover{filter:brightness(1.2)}
+main{max-width:1150px;margin:auto;padding:18px}
+.page{display:none}
+.page.active{display:block}
+h2{margin-top:8px}
+.panel{
+ background:#1b2238;padding:20px;
+ border-radius:16px;margin-bottom:18px;
+}
+.pack-art{
+ width:180px;height:245px;margin:20px auto;
+ border-radius:16px;
+ background:linear-gradient(145deg,#ffca45,#ef4b78,#7445c7);
+ display:flex;align-items:center;justify-content:center;
+ text-align:center;font-size:28px;font-weight:bold;
+ border:4px solid #ffe6a0;
+ box-shadow:0 8px 30px #0008;
+}
+.actions{
+ display:flex;justify-content:center;
+ flex-wrap:wrap;gap:10px;
+}
+.action{background:#7051e8}
+.action.green{background:#148c70}
+.action:disabled{opacity:.4;cursor:not-allowed}
+#message{text-align:center;color:#b9c9ff;min-height:25px}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
+ gap:13px;
+}
+.card{
+ background:#26314b;
+ border-radius:13px;
+ padding:10px;
+ text-align:center;
+ border:2px solid #59647e;
+ min-width:0;
+}
+.card.modern{
+ background:linear-gradient(145deg,#243d61,#432b70);
+ border-color:#9c7bff;
+}
+.card.illustration{
+ background:linear-gradient(145deg,#4c286b,#a34491);
+ border-color:#f2aaff;
+}
+.card.crown{
+ background:linear-gradient(145deg,#78521b,#c18a29);
+ border-color:#ffe28a;
+}
+.card img{
+ width:100%;height:115px;object-fit:contain;
+ image-rendering:auto;
+}
+.card h3{font-size:15px;margin:7px 0}
+.card small{color:#d0d5e8}
+.shiny{color:#ffdc4b;font-weight:bold}
+.rarity{font-size:12px;margin-top:5px;color:#d4c6ff}
+.search{
+ width:100%;padding:13px;border-radius:10px;
+ border:1px solid #555e78;background:#202943;
+ color:white;margin-bottom:15px;font-size:16px;
+}
+.progress{
+ background:#343b53;border-radius:20px;
+ height:12px;overflow:hidden;margin:12px 0;
+}
+.progress div{background:#8e6bff;height:100%;width:0}
+.muted{color:#aeb8d0}
+#packResults{margin-top:22px}
+footer{text-align:center;padding:25px;color:#8893ad}
+@media(max-width:500px){
+ header h1{font-size:25px}
+ main{padding:12px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <h1>⚡ PokéCollect</h1>
+ <p>Open packs. Discover Pokémon. Complete your Pokédex.</p>
+</header>
+
+<div class="stats">
+ <div class="stat">🪙 Coins: <span id="coins">500</span></div>
+ <div class="stat">🎴 Cards: <span id="totalCards">0</span></div>
+ <div class="stat">📖 Pokémon: <span id="uniqueCards">0</span></div>
+</div>
+
+<nav>
+ <button class="active" onclick="showPage('packs',this)">🎁 Packs</button>
+ <button onclick="showPage('collection',this)">🎴 Collection</button>
+ <button onclick="showPage('pokedex',this)">📖 Pokédex</button>
+ <button onclick="showPage('shop',this)">🛒 Shop</button>
+</nav>
+
+<main>
+
+<section id="packs" class="page active">
+ <div class="panel" style="text-align:center">
+  <h2>🎁 Booster Packs</h2>
+  <p class="muted">Every pack contains 10 random Pokémon cards!</p>
+  <div class="pack-art">POKÉ<br>COLLECT<br>PACK</div>
+  <div class="actions">
+   <button class="action green" onclick="openPack(true)">Free Pack</button>
+   <button class="action" onclick="openPack(false)">Open Pack · 200 🪙</button>
+  </div>
+  <p id="message">Your Pokémon adventure starts here!</p>
+ </div>
+ <div id="packResults"></div>
+</section>
+
+<section id="collection" class="page">
+ <h2>🎴 My Collection</h2>
+ <p class="muted">Every card you discover is saved here. Duplicates count too!</p>
+ <input class="search" id="collectionSearch"
+ placeholder="Search your cards..." oninput="renderCollection()">
+ <div class="grid" id="collectionGrid"></div>
+</section>
+
+<section id="pokedex" class="page">
+ <h2>📖 National Pokédex</h2>
+ <p id="dexStatus" class="muted">Loading Pokémon data...</p>
+ <div class="progress"><div id="dexProgress"></div></div>
+ <input class="search" id="dexSearch"
+ placeholder="Search Pokémon by name or number..."
+ oninput="renderDex()">
+ <div class="grid" id="dexGrid"></div>
+</section>
+
+<section id="shop" class="page">
+ <h2>🛒 Pokémon Shop</h2>
+ <div class="panel">
+  <h3>🎁 Daily Bonus</h3>
+  <p>Claim 100 free coins once every 24 hours.</p>
+  <button class="action green" onclick="dailyBonus()">Claim 100 Coins</button>
+ </div>
+ <div class="panel">
+  <h3>🎴 Booster Pack</h3>
+  <p>10 random Pokémon cards.</p>
+  <p><b>200 coins</b></p>
+  <button class="action" onclick="openPack(false)">Buy Pack</button>
+ </div>
+ <div class="panel">
+  <h3>✨ Your Mission</h3>
+  <p>Discover new Pokémon, hunt for shiny cards, and complete your Pokédex!</p>
+ </div>
+</section>
+
+</main>
+
+<footer>
+ PokéCollect · A fan-made collecting game
+</footer>
+
+<script>
+const API="https://pokeapi.co/api/v2";
+
+let coins=Number(localStorage.getItem("pc_coins") ?? 500);
+let collection=JSON.parse(localStorage.getItem("pc_collection")||"[]");
+let dex=[];
+let freeTime=Number(localStorage.getItem("pc_free")||0);
+let bonusTime=Number(localStorage.getItem("pc_bonus")||0);
+let busy=false;
+
+function save(){
+ localStorage.setItem("pc_coins",coins);
+ localStorage.setItem("pc_collection",JSON.stringify(collection));
+ localStorage.setItem("pc_free",freeTime);
+ localStorage.setItem("pc_bonus",bonusTime);
+ updateStats();
+}
+
+function updateStats(){
+ document.getElementById("coins").textContent=coins;
+ document.getElementById("totalCards").textContent=collection.length;
+ document.getElementById("uniqueCards").textContent=
+ new Set(collection.map(c=>c.id)).size;
+}
+
+function showPage(id,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ button.classList.add("active");
+ if(id==="collection")renderCollection();
+ if(id==="pokedex")renderDex();
+}
+
+function rarityRoll(){
+ let n=Math.random()*100;
+ if(n<0.2)return "Crown Rare";
+ if(n<2)return "Special Illustration";
+ if(n<7)return "Illustration Rare";
+ if(n<15)return "Ultra Rare";
+ if(n<35)return "Rare";
+ if(n<60)return "Uncommon";
+ return "Common";
+}
+
+async function getPokemon(id){
+ const response=await fetch(`${API}/pokemon/${id}`);
+ if(!response.ok)throw new Error("Pokémon data unavailable");
+ const p=await response.json();
+
+ const official=p.sprites.other?.["official-artwork"]?.front_default;
+ const dream=p.sprites.other?.dream_world?.front_default;
+ const sprite=p.sprites.front_default;
+
+ return {
+  id:p.id,
+  name:p.name,
+  image:official||dream||sprite||"",
+  type:p.types.map(t=>t.type.name).join(" / ")
+ };
+}
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",
+  '"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function cardHTML(c){
+ let style=c.style==="modern"?"modern":
+ c.rarity==="Crown Rare"?"crown":
+ c.rarity.includes("Illustration")?"illustration":"";
+
+ return `
+ <div class="card ${style}">
+  <img src="${escapeHTML(c.image)}" alt="${escapeHTML(c.name)}"
+   loading="lazy">
+  <h3>#${c.id} ${escapeHTML(c.name.toUpperCase())}</h3>
+  <small>${escapeHTML(c.type)}</small>
+  <div class="rarity">${escapeHTML(c.rarity)}</div>
+  ${c.shiny?'<div class="shiny">✨ SHINY</div>':''}
+  <small>${c.style==="modern"?"Modern Design":"Classic Design"}</small>
+ </div>`;
+}
+
+async function openPack(isFree){
+ if(busy)return;
+
+ const now=Date.now();
+ const twelveHours=12*60*60*1000;
+
+ if(isFree && now-freeTime<twelveHours){
+  let hours=Math.ceil((twelveHours-(now-freeTime))/3600000);
+  document.getElementById("message").textContent=
+  `Your next free pack is available in about ${hours} hours.`;
+  return;
+ }
+
+ if(!isFree && coins<200){
+  document.getElementById("message").textContent=
+  "Not enough coins! Claim your daily bonus.";
+  return;
+ }
+
+ if(dex.length===0){
+  document.getElementById("message").textContent=
+  "Pokémon data is still loading. Please wait!";
+  return;
+ }
+
+ busy=true;
+ document.getElementById("message").textContent=
+ "✨ Opening your booster pack...";
+
+ if(isFree)freeTime=now;
+ else coins-=200;
+
+ const results=[];
+ try{
+  for(let i=0;i<10;i++){
+   const selected=dex[Math.floor(Math.random()*dex.length)];
+   const pokemon=await getPokemon(selected.id);
+   const rarity=rarityRoll();
+   const shiny=Math.random()<0.0125;
+
+   const card={
+    ...pokemon,
+    rarity,
+    shiny,
+    style:Math.random()<0.5?"classic":"modern",
+    serial:Date.now()+"-"+i+"-"+Math.random()
+   };
+
+   results.push(card);
+  }
+
+  collection.push(...results);
+  save();
+
+  document.getElementById("message").textContent=
+  "🎉 You discovered 10 Pokémon cards!";
+
+  document.getElementById("packResults").innerHTML=`
+   <div class="panel">
+    <h2>🎉 Your Booster Pack!</h2>
+    <div class="grid">${results.map(cardHTML).join("")}</div>
+   </div>`;
+
+ }catch(error){
+  if(isFree)freeTime=0;
+  else coins+=200;
+  save();
+  document.getElementById("message").textContent=
+  "Could not load cards. Check your internet and try again.";
+ }
+
+ busy=false;
+ save();
+}
+
+function renderCollection(){
+ const search=document.getElementById("collectionSearch").value.toLowerCase();
+ const filtered=collection.filter(c=>
+ c.name.includes(search)||String(c.id).includes(search)
+ ).slice().reverse();
+
+ document.getElementById("collectionGrid").innerHTML=
+ filtered.length?filtered.map(cardHTML).join(""):
+ '<p class="muted">No cards found. Open a booster pack!</p>';
+}
+
+function renderDex(){
+ const search=document.getElementById("dexSearch").value.toLowerCase();
+ const collected=new Set(collection.map(c=>c.id));
+ const filtered=dex.filter(p=>
+ p.name.includes(search)||String(p.id).includes(search)
+ );
+
+ document.getElementById("dexStatus").textContent=
+ `${collected.size} / ${dex.length} Pokémon discovered`;
+
+ document.getElementById("dexProgress").style.width=
+ (dex.length?collected.size/dex.length*100:0)+"%";
+
+ document.getElementById("dexGrid").innerHTML=
+ filtered.map(p=>{
+  const found=collected.has(p.id);
+  return `
+  <div class="card">
+   <div style="font-size:12px;color:#aeb8d0">#${p.id}</div>
+   <div style="font-size:36px;margin:15px"> ${found?"⭐":"❔"} </div>
+   <h3>${found?escapeHTML(p.name.toUpperCase()):"???"}</h3>
+   <small>${found?"Discovered":"Not discovered"}</small>
+  </div>`;
+ }).join("");
+}
+
+function dailyBonus(){
+ const now=Date.now();
+ if(now-bonusTime<24*60*60*1000){
+  alert("Your daily bonus has already been claimed. Come back later!");
+  return;
+ }
+ bonusTime=now;
+ coins+=100;
+ save();
+ alert("🎉 You received 100 coins!");
+}
+
+async function loadDex(){
+ try{
+  document.getElementById("dexStatus").textContent=
+  "Connecting to the Pokémon database...";
+
+  const response=await fetch(`${API}/pokemon-species?limit=2000`);
+  if(!response.ok)throw new Error("API unavailable");
+
+  const data=await response.json();
+
+  dex=data.results.map(p=>{
+   const id=Number(p.url.split("/").filter(Boolean).pop());
+   return {id,name:p.name};
+  }).filter(p=>p.id>=1&&p.id<=1025)
+    .sort((a,b)=>a.id-b.id);
+
+  renderDex();
+ }catch(error){
+  document.getElementById("dexStatus").textContent=
+  "Could not load the Pokédex. Check your internet and refresh.";
+ }
+}
+
+updateStats();
+loadDex();
+</script>
+
+</body>
+</html>
