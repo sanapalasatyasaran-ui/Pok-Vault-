@@ -558,8 +558,13 @@ async function loadDex(){
  }
 }
 
-stats();
-loadDex();
+// RESET POKÉVAULT
+localStorage.removeItem("pc_coins");
+localStorage.removeItem("pc_collection");
+localStorage.removeItem("pc_free");
+localStorage.removeItem("pc_bonus");
+
+location.reload();
 </script>
 </body>
 </html>
