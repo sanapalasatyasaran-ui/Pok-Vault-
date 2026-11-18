@@ -6,670 +6,623 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PokéVault</title>
 <style>
-:root{
- --bg:#100b17;--panel:#1b1424;--panel2:#241a30;
- --pink:#ec8acb;--purple:#9b72d5;--text:#f7efff;
- --muted:#b9a9c4;--line:#49334f;--gold:#f4d28b;
+:root {
+  --bg:#090817;
+  --panel:#17142c;
+  --panel2:#211c3c;
+  --text:#f8f5ff;
+  --muted:#aaa4c4;
+  --purple:#9b72ff;
+  --pink:#ff73c8;
+  --gold:#ffd36a;
 }
 *{box-sizing:border-box}
 body{
- margin:0;background:radial-gradient(ellipse at top,#39203e 0,#1b1123 38%,#100b17 80%);
- color:var(--text);font-family:Arial,Helvetica,sans-serif;
+  margin:0;background:
+  radial-gradient(circle at 15% 0%,#30205a 0,transparent 35%),
+  radial-gradient(circle at 90% 30%,#27153f 0,transparent 35%),var(--bg);
+  color:var(--text);font-family:Arial,sans-serif;min-height:100vh;
 }
-button,input,select{font:inherit}
-button{cursor:pointer}
 header{
- height:65px;display:flex;align-items:center;justify-content:space-between;
- padding:0 3%;gap:15px;background:#170f20ed;border-bottom:1px solid #49334f;
- position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);
+  position:sticky;top:0;z-index:10;background:#100d20ed;
+  border-bottom:1px solid #ffffff18;backdrop-filter:blur(15px);
+  padding:15px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;
 }
-.logo{font-size:23px;font-weight:900;letter-spacing:-1px}
-.logo span{color:#ef9bcf}
-nav{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-nav button{
- background:transparent;color:#c9b9d2;padding:10px 12px;border-radius:10px;
- border:1px solid transparent;font-size:13px;
-}
-nav button.active,nav button:hover{
- background:#39243e;color:white;border-color:#71466f;
-}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px}
+.logo span{color:var(--pink)}
 .coins{
- display:flex;align-items:center;gap:8px;background:#302039;
- border:1px solid #704a71;border-radius:25px;padding:7px 12px;
- color:#ffe3a0;font-weight:900;font-size:14px;white-space:nowrap;
+  display:flex;align-items:center;gap:9px;background:#29203f;
+  border:1px solid #ffffff20;border-radius:30px;padding:9px 15px;font-weight:bold;
 }
-.coins img{width:27px;height:27px;object-fit:contain}
-main{max-width:1500px;margin:auto;padding:30px 3% 80px}
+.coin-pic{width:27px;height:27px;border-radius:50%;object-fit:cover}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+nav button,.btn{
+  border:0;border-radius:10px;padding:11px 15px;background:#292342;
+  color:white;font-weight:bold;cursor:pointer;
+}
+nav button.active,nav button:hover,.btn.primary{
+  background:linear-gradient(110deg,#8759ef,#d05ac5);
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+main{max-width:1250px;margin:auto;padding:28px 5% 70px}
 .page{display:none}.page.active{display:block}
-.topline{
- display:flex;align-items:flex-end;justify-content:space-between;
- gap:15px;margin:10px 0 23px;
+h1{font-size:clamp(28px,5vw,43px);margin:10px 0}
+h2{margin-top:30px}
+.subtitle{color:var(--muted);line-height:1.6}
+.hero{
+  padding:30px;border-radius:23px;
+  background:linear-gradient(120deg,#34205c,#241a48 60%,#4c245a);
+  border:1px solid #ffffff20;overflow:hidden;position:relative;
 }
-.eyebrow{font-size:10px;letter-spacing:2px;color:#d99acb;text-transform:uppercase}
-h1{font-size:32px;margin:7px 0 0}
-h2{font-size:23px;margin:0}
-.subtle{font-size:12px;color:var(--muted)}
-.value{text-align:right}
-.value strong{font-size:25px;color:#ffe5b2;display:block}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-input,select{
- background:#130e1b;border:1px solid #49354e;border-radius:8px;
- color:white;padding:11px 12px;min-width:125px;font-size:12px;
+.hero:after{content:"✦";position:absolute;right:30px;top:0;font-size:130px;color:#ffffff16}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
+.stat,.box{
+  background:var(--panel);border:1px solid #ffffff15;border-radius:16px;padding:17px;
 }
-input{flex:1;min-width:190px}
-input::placeholder{color:#a18da9}
-.collection-meta{font-size:11px;color:#c4b2ce;margin:0 0 17px}
-.card-grid{
- display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));
- gap:16px 12px;
+.stat strong{font-size:24px;display:block;margin-top:7px}
+.muted{color:var(--muted)}
+.pack-controls{
+  display:flex;align-items:center;gap:13px;flex-wrap:wrap;
+  padding:16px;background:var(--panel);border:1px solid #ffffff18;
+  border-radius:15px;margin:20px 0;
 }
-.card-tile{min-width:0;position:relative;cursor:pointer;transition:.2s}
-.card-tile:hover{transform:translateY(-5px)}
-.card-image{
- width:100%;aspect-ratio:0.72;display:block;object-fit:contain;
- border-radius:9px;background:#261a31;
- box-shadow:0 5px 16px #0008;border:1px solid #6b526e;
+select,input{
+  background:#292342;color:white;border:1px solid #ffffff25;
+  border-radius:9px;padding:11px;font-size:15px;
 }
-.card-fallback{
- width:100%;aspect-ratio:.72;border-radius:9px;
- background:linear-gradient(145deg,#573a6d,#171b3c);
- border:2px solid #b88bc1;padding:9px;display:flex;flex-direction:column;
- justify-content:space-between;overflow:hidden;color:white;
-}
-.fallback-art{
- flex:1;display:flex;align-items:center;justify-content:center;
- font-size:65px;text-shadow:0 4px 12px #000;
-}
-.fallback-name{font-weight:900;font-size:13px}
-.fallback-details{font-size:9px;color:#f3dff8}
-.card-caption{
- display:flex;justify-content:space-between;gap:4px;
- margin-top:6px;font-size:10px;font-weight:bold;
-}
-.card-caption span:last-child{color:#f0c4e5}
-.card-set{font-size:9px;color:#a995b2;margin-top:3px}
-.duplicate{
- position:absolute;right:5px;top:5px;border-radius:20px;
- padding:4px 7px;background:#170e20ed;border:1px solid #a17ba7;
- font-size:10px;font-weight:bold;
-}
-.rarity-tag{
- position:absolute;left:5px;top:5px;background:#26152edc;
- border:1px solid #c18aca;border-radius:5px;padding:3px 5px;
- font-size:8px;color:#ffe0ff;
-}
-.empty{
- grid-column:1/-1;padding:55px 15px;text-align:center;
- border:1px dashed #684d6e;border-radius:15px;color:var(--muted);
-}
-.home-hero{
- background:linear-gradient(115deg,#422344,#251831 60%,#50304f);
- border:1px solid #765174;border-radius:18px;padding:32px;
- display:flex;justify-content:space-between;align-items:center;gap:20px;
- margin-bottom:30px;overflow:hidden;
-}
-.home-hero h1{font-size:clamp(28px,5vw,48px)}
-.home-hero p{max-width:550px;color:#d7c4df;line-height:1.6;font-size:14px}
-.hero-art{font-size:100px;filter:drop-shadow(0 10px 18px #0008)}
-.primary{
- background:linear-gradient(110deg,#f1a2d1,#ad7be0);
- color:#27132c;border:0;border-radius:9px;padding:12px 18px;
- font-weight:900;
-}
-.secondary{
- background:#30223a;color:white;border:1px solid #684b70;
- border-radius:9px;padding:11px 15px;
-}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin:28px 0 16px}
-.pack-grid{
- display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;
+.pack-grid,.card-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:17px;
 }
 .pack-card{
- background:linear-gradient(150deg,#2b1c38,#181120);
- border:1px solid #65496c;border-radius:14px;padding:13px;
- cursor:pointer;transition:.2s;
+  background:var(--panel);border:1px solid #ffffff18;border-radius:17px;
+  padding:13px;cursor:pointer;transition:.2s;text-align:center;
 }
-.pack-card:hover{transform:translateY(-4px);border-color:#e5a2d3}
-.pack-picture{
- height:180px;border-radius:10px;position:relative;overflow:hidden;
- display:flex;align-items:center;justify-content:center;
- border:1px solid #ffffff55;
- background:radial-gradient(circle,var(--light),var(--dark));
+.pack-card:hover{transform:translateY(-5px);border-color:var(--pink)}
+.pack-art{
+  height:205px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;position:relative;overflow:hidden;
+  background:linear-gradient(145deg,var(--light),var(--dark));
+  border:2px solid #ffffff35;box-shadow:inset 0 0 35px #ffffff25;
 }
-.pack-picture:before{
- content:"";position:absolute;width:135px;height:135px;border:2px solid #ffffff44;
- transform:rotate(45deg);border-radius:23px;
+.pack-art:before,.pack-art:after{
+  content:"";position:absolute;width:190px;height:190px;border:1px solid #ffffff45;
+  border-radius:50%;
 }
-.pack-picture:after{
- content:"";position:absolute;width:85px;height:85px;border:1px solid #ffffff66;
- border-radius:50%;
+.pack-art:after{width:140px;height:140px}
+.pack-symbol{font-size:64px;z-index:1;filter:drop-shadow(0 5px 10px #0008)}
+.pack-art small{z-index:1;font-weight:900;letter-spacing:3px}
+.pack-card h3{font-size:16px;margin:13px 0 5px}
+.pack-card p{font-size:13px;color:var(--muted);margin:5px}
+.pack-cost{color:var(--gold);font-weight:bold}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.card-tile{
+  background:var(--panel);border:1px solid #ffffff20;border-radius:13px;
+  padding:9px;min-width:0;position:relative;
 }
-.pack-symbol{font-size:70px;z-index:1;filter:drop-shadow(0 8px 8px #0009)}
-.pack-card h3{font-size:14px;margin:12px 0 5px}
-.pack-card p{font-size:10px;color:var(--muted);min-height:28px}
-.pack-info{display:flex;justify-content:space-between;font-size:11px;color:#f1d2a1}
-.dex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
-.dex-item{
- background:#21172b;border:1px solid #49334f;border-radius:10px;
- text-align:center;padding:10px;min-height:135px;
+.card-tile img{
+  display:block;width:100%;aspect-ratio:2.5/3.5;object-fit:contain;
+  background:#28233b;border-radius:8px;
 }
-.dex-item img{width:100%;height:90px;object-fit:contain}
-.dex-item b{font-size:11px}
-.dex-item .subtle{font-size:9px;margin-top:4px}
+.card-tile h4{margin:9px 2px 4px;font-size:14px}
+.card-tile p{margin:4px 2px;color:var(--muted);font-size:12px}
+.count{
+  position:absolute;top:15px;right:15px;background:#171225eF;
+  padding:5px 9px;border-radius:20px;font-weight:bold;font-size:12px;
+}
+.tag{color:var(--gold);font-size:12px;font-weight:bold}
+.empty{
+  padding:40px 15px;text-align:center;color:var(--muted);
+  border:1px dashed #ffffff30;border-radius:15px;
+}
 .modal{
- position:fixed;inset:0;background:#09060deF;z-index:50;
- display:none;align-items:center;justify-content:center;padding:16px;
+  display:none;position:fixed;inset:0;background:#05040deF;z-index:30;
+  align-items:center;justify-content:center;padding:15px;overflow:auto;
 }
 .modal.show{display:flex}
-.modal-box{
- width:min(850px,100%);max-height:95vh;overflow:auto;
- background:linear-gradient(145deg,#281b32,#130e1c);
- border:1px solid #79577f;border-radius:18px;padding:20px;
- text-align:center;
+.modal-content{
+  background:#17132a;border:1px solid #ffffff25;border-radius:20px;
+  padding:22px;width:min(850px,100%);text-align:center;max-height:95vh;overflow:auto;
 }
-.modal-top{display:flex;justify-content:space-between;align-items:center}
-.modal-top h2{font-size:19px}
-.close{
- border:1px solid #765879;background:#38263e;color:white;
- border-radius:8px;padding:8px 12px;
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.close{background:#332b4a;border:0;color:white;border-radius:9px;padding:9px 13px;cursor:pointer}
+.open-stage{
+  min-height:290px;display:flex;align-items:center;justify-content:center;
+  perspective:900px;
 }
-.pack-stage{
- height:390px;display:flex;align-items:center;justify-content:center;
- perspective:1000px;overflow:hidden;position:relative;
+.big-pack{
+  width:175px;height:245px;border-radius:15px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:linear-gradient(145deg,var(--light),var(--dark));
+  border:3px solid #ffffff70;box-shadow:0 15px 55px #0009,inset 0 0 40px #ffffff30;
+  position:relative;
 }
-.animated-pack{
- width:205px;height:310px;position:relative;
- transform-style:preserve-3d;animation:packFloat 2s ease-in-out infinite;
-}
-.pack-front{
- position:absolute;inset:0;border:3px solid #f4d3f4;border-radius:12px;
- display:flex;flex-direction:column;align-items:center;justify-content:space-around;
- background:linear-gradient(150deg,var(--light),var(--dark));
- box-shadow:0 15px 50px #000b,inset 0 0 35px #ffffff22;
- overflow:hidden;
-}
-.pack-front:before{
- content:"";position:absolute;width:260px;height:260px;border:3px solid #ffffff44;
- transform:rotate(45deg);border-radius:40px;
-}
-.pack-brand{z-index:1;font-size:13px;letter-spacing:3px;font-weight:900}
-.pack-big-symbol{z-index:1;font-size:105px;filter:drop-shadow(0 9px 10px #0008)}
-.pack-name{z-index:1;font-weight:900;font-size:16px;text-align:center;padding:0 10px}
-.pack-bottom{z-index:1;font-size:10px;letter-spacing:2px}
-@keyframes packFloat{
- 0%,100%{transform:translateY(0) rotateY(-12deg) rotateX(3deg)}
- 50%{transform:translateY(-12px) rotateY(12deg) rotateX(-3deg)}
-}
-@keyframes packSpin{
- 0%{transform:rotateY(0) scale(1)}
- 45%{transform:rotateY(540deg) scale(1.12)}
- 100%{transform:rotateY(1080deg) scale(.15);opacity:0}
-}
-@keyframes packOpen{
- 0%{transform:scale(1) rotate(0);opacity:1}
- 50%{transform:scale(1.25) rotate(-5deg);opacity:1}
- 100%{transform:scale(1.8) rotate(8deg);opacity:0}
-}
-.pack-stage.spinning .animated-pack{animation:packSpin 1.7s ease-in forwards}
-.pack-stage.opening .animated-pack{animation:packOpen .8s ease-in forwards}
-.pack-stage.hidden{display:none}
-.opening-message{font-size:13px;color:#e5cce8;min-height:22px}
-.reveal-card{
- width:min(245px,65vw);margin:10px auto;
- animation:revealIn .6s cubic-bezier(.2,.8,.3,1);
-}
-.reveal-card img{width:100%;display:block;border-radius:12px;box-shadow:0 10px 35px #000b}
-@keyframes revealIn{
- from{opacity:0;transform:translateY(60px) scale(.75) rotateY(35deg)}
- to{opacity:1;transform:translateY(0) scale(1) rotateY(0)}
-}
-.reveal-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}
-.reveal-progress{font-size:12px;color:#c9b5d0;margin:8px}
-.detail-image{width:min(320px,80%);max-height:65vh;object-fit:contain}
-.detail-info{font-size:13px;color:#d2c1db;line-height:1.6}
-@media(max-width:650px){
- header{height:auto;min-height:65px;flex-wrap:wrap;padding:10px 3%;justify-content:center}
- nav{order:3;width:100%;justify-content:center}
- .coins{font-size:11px}
- .coins img{width:23px;height:23px}
- main{padding:20px 3%}
- .topline{align-items:flex-start}
- h1{font-size:27px}
- .home-hero{padding:22px}
- .hero-art{font-size:65px}
- .card-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px 8px}
- .pack-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
- .pack-picture{height:125px}
- .pack-symbol{font-size:55px}
- .pack-card{padding:9px}
- .pack-stage{height:350px}
-}
-@media(max-width:390px){
- .card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.big-pack:before{content:"";position:absolute;inset:12px;border:1px solid #ffffff75;border-radius:9px}
+.big-pack span{font-size:75px;z-index:1}
+.big-pack b{z-index:1;letter-spacing:3px}
+.spinning{animation:spin 1.4s ease-in-out}
+@keyframes spin{0%{transform:rotateY(0) scale(1)}50%{transform:rotateY(720deg) scale(1.12)}100%{transform:rotateY(1080deg) scale(1)}}
+.opening{animation:burst .7s forwards}
+@keyframes burst{to{transform:scale(1.6) rotate(12deg);opacity:0}}
+.reveal-area{min-height:340px;display:flex;align-items:center;justify-content:center}
+.reveal-card{width:min(235px,70vw);animation:cardIn .5s ease}
+.reveal-card img{width:100%;max-height:330px;object-fit:contain;filter:drop-shadow(0 10px 20px #0009)}
+@keyframes cardIn{from{opacity:0;transform:translateY(35px) rotateY(70deg)}to{opacity:1;transform:none}}
+.reveal-card h3{margin:8px}
+.progress{color:var(--muted);margin:8px}
+.footer-note{font-size:12px;color:var(--muted);margin-top:25px;line-height:1.6}
+@media(max-width:600px){
+  header{justify-content:center}
+  .logo{width:100%;text-align:center}
+  main{padding:20px 4%}
+  .pack-grid,.card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .pack-art{height:170px}
 }
 </style>
 </head>
 <body>
 
 <header>
- <div class="logo">✦ Poké<span>Vault</span></div>
- <nav>
-  <button class="active" data-page="home">Home</button>
-  <button data-page="collection">Collection</button>
-  <button data-page="packs">Packs</button>
-  <button data-page="pokedex">Pokédex</button>
- </nav>
- <div class="coins">
-  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu">
-  <span id="coin-count">200,000,000,000,000</span>
- </div>
+  <div class="logo">⚡ Poké<span>Vault</span></div>
+  <nav>
+    <button class="active" onclick="showPage('home',this)">Home</button>
+    <button onclick="showPage('packs',this)">Packs</button>
+    <button onclick="showPage('collection',this)">Collection</button>
+    <button onclick="showPage('dex',this)">Pokédex</button>
+  </nav>
+  <div class="coins">
+    <img class="coin-pic" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu">
+    <span id="coin-count">200,000,000,000,000</span>
+  </div>
 </header>
 
 <main>
-<section class="page active" id="home">
- <div class="home-hero">
-  <div>
-   <div class="eyebrow">Your Pokémon card universe</div>
-   <h1>Collect. Discover. Repeat.</h1>
-   <p>Open booster packs, discover beautiful cards, and build your own Pokémon collection. Your next rare card could be waiting inside.</p>
-   <button class="primary" onclick="showPage('packs')">Explore Booster Packs</button>
+<section id="home" class="page active">
+  <div class="hero">
+    <p class="tag">YOUR POKÉMON CARD COLLECTION</p>
+    <h1>Welcome to PokéVault!</h1>
+    <p class="subtitle">Discover amazing Pokémon cards, collect rare treasures, and build your own card collection.</p>
+    <button class="btn primary" onclick="showPage('packs')">Explore Booster Packs →</button>
   </div>
-  <div class="hero-art">🎴</div>
- </div>
- <div class="section-head">
-  <h2>Featured Booster Packs</h2>
-  <span class="subtle">10 cards per pack</span>
- </div>
- <div class="pack-grid" id="featured-packs"></div>
+  <div class="stats">
+    <div class="stat"><span class="muted">Cards collected</span><strong id="home-cards">0</strong></div>
+    <div class="stat"><span class="muted">Unique Pokémon</span><strong id="home-dex">0</strong></div>
+    <div class="stat"><span class="muted">Packs opened</span><strong id="home-packs">0</strong></div>
+  </div>
+  <h2>Start your collection</h2>
+  <p class="subtitle">Every booster pack contains 10 cards. Choose your favorite pack and start discovering!</p>
+  <button class="btn primary" onclick="showPage('packs')">Open Packs</button>
 </section>
 
-<section class="page" id="packs">
- <div class="topline">
-  <div><div class="eyebrow">Explore expansions</div><h1>Booster Packs</h1></div>
-  <div class="value"><span class="subtle">Your balance</span><strong id="pack-balance">200T</strong></div>
- </div>
- <div class="pack-grid" id="all-packs"></div>
+<section id="packs" class="page">
+  <h1>Booster Packs</h1>
+  <p class="subtitle">Choose a pack and how many you want to open. Each pack costs only 1 Pikachu Coin.</p>
+  <div class="pack-controls">
+    <label for="quantity"><b>How many packs?</b></label>
+    <select id="quantity" onchange="updatePrice()">
+      <option value="1">1 Pack</option>
+      <option value="5">5 Packs</option>
+      <option value="10">10 Packs</option>
+      <option value="25">25 Packs</option>
+      <option value="50">50 Packs</option>
+      <option value="100">100 Packs</option>
+    </select>
+    <b id="price-display" style="color:var(--gold)">Total: 1 Pikachu Coin</b>
+  </div>
+  <div class="pack-grid" id="pack-grid"></div>
 </section>
 
-<section class="page" id="collection">
- <div class="topline">
-  <div><div class="eyebrow">Your collector</div><h1>Collection</h1></div>
-  <div class="value"><span class="eyebrow">Collection value</span><strong id="collection-total">0 cards</strong><span class="subtle" id="collection-small">Start collecting!</span></div>
- </div>
- <div class="toolbar">
-  <input id="search" placeholder="⌕ Search card, set or number..." oninput="renderCollection()">
-  <select id="kind-filter" onchange="renderCollection()">
-   <option value="all">All card kinds</option><option>Pokémon</option><option>Trainer</option><option>Item</option><option>Energy</option>
-  </select>
-  <select id="type-filter" onchange="renderCollection()">
-   <option value="all">All types</option>
-   <option>Grass</option><option>Fire</option><option>Water</option><option>Lightning</option>
-   <option>Psychic</option><option>Fighting</option><option>Darkness</option>
-   <option>Metal</option><option>Dragon</option><option>Colorless</option><option>Fairy</option>
-  </select>
-  <select id="rarity-filter" onchange="renderCollection()">
-   <option value="all">Rarity</option><option>Common</option><option>Uncommon</option>
-   <option>Rare</option><option>Ultra Rare</option><option>Legendary</option>
-   <option>Shiny</option><option>1-Star Illustration</option>
-   <option>2-Star Special Illustration</option><option>3-Star Immersive Rare</option>
-  </select>
-  <select id="sort-filter" onchange="renderCollection()">
-   <option value="rarity">Rarity ↓</option><option value="name">Name A-Z</option><option value="newest">Newest</option>
-  </select>
- </div>
- <div class="collection-meta" id="shown-count">0 cards shown</div>
- <div class="card-grid" id="card-grid"></div>
+<section id="collection" class="page">
+  <h1>My Collection</h1>
+  <p class="subtitle">All the cards you have discovered are saved here.</p>
+  <div class="toolbar">
+    <input id="search" placeholder="Search cards..." oninput="renderCollection()">
+    <select id="kind-filter" onchange="renderCollection()">
+      <option value="All">All card types</option>
+      <option value="Pokémon">Pokémon</option>
+      <option value="Trainer">Trainer</option>
+      <option value="Item">Item</option>
+    </select>
+    <select id="rarity-filter" onchange="renderCollection()">
+      <option value="All">All rarities</option>
+      <option value="Common">Common</option>
+      <option value="Uncommon">Uncommon</option>
+      <option value="Rare">Rare</option>
+      <option value="Double Rare">Double Rare</option>
+      <option value="Ultra Rare">Ultra Rare</option>
+      <option value="Illustration Rare">Illustration Rare</option>
+      <option value="Special Illustration Rare">Special Illustration Rare</option>
+      <option value="Secret Rare">Secret Rare</option>
+    </select>
+    <select id="sort-filter" onchange="renderCollection()">
+      <option value="new">Newest first</option>
+      <option value="rarity">Rarity order</option>
+      <option value="name">Name A-Z</option>
+    </select>
+  </div>
+  <div id="collection-count" class="muted"></div>
+  <div class="card-grid" id="collection-grid"></div>
 </section>
 
-<section class="page" id="pokedex">
- <div class="topline">
-  <div><div class="eyebrow">Discovery log</div><h1>Pokédex</h1></div>
-  <div class="value"><strong id="dex-total">0</strong><span class="subtle">Discovered</span></div>
- </div>
- <div class="card-grid" id="dex-grid"></div>
+<section id="dex" class="page">
+  <h1>Pokédex</h1>
+  <p class="subtitle">Discover Pokémon by collecting their cards.</p>
+  <div class="stats">
+    <div class="stat"><span class="muted">Discovered</span><strong id="dex-count">0</strong></div>
+    <div class="stat"><span class="muted">Total Pokémon</span><strong>1,025</strong></div>
+  </div>
+  <div id="dex-list" class="card-grid"></div>
 </section>
 </main>
 
-<!-- Booster pack opening -->
 <div class="modal" id="opening-modal">
- <div class="modal-box">
-  <div class="modal-top">
-   <h2 id="opening-title">Opening booster pack</h2>
-   <button class="close" onclick="closeOpening()">✕</button>
-  </div>
-  <div class="pack-stage" id="pack-stage">
-   <div class="animated-pack" id="animated-pack">
-    <div class="pack-front" id="pack-front">
-     <div class="pack-brand">POKÉVAULT</div>
-     <div class="pack-big-symbol" id="pack-symbol">🔥</div>
-     <div class="pack-name" id="pack-name">Booster Pack</div>
-     <div class="pack-bottom">10 COLLECTIBLE CARDS</div>
+  <div class="modal-content">
+    <div class="modal-top">
+      <h2 id="opening-title">Booster Pack</h2>
+      <button class="close" onclick="closeModal()">✕</button>
     </div>
-   </div>
+    <p class="subtitle" id="opening-message">Your booster pack is ready!</p>
+    <div class="open-stage" id="open-stage">
+      <div class="big-pack" id="big-pack">
+        <span id="big-symbol">⚡</span>
+        <b>POKÉVAULT</b>
+      </div>
+    </div>
+    <div class="progress" id="progress"></div>
+    <div class="reveal-area" id="reveal-area"></div>
+    <button class="btn primary" id="action-button" onclick="startPack()">Open Pack</button>
   </div>
-  <div class="opening-message" id="opening-message">Your pack is ready...</div>
-  <div class="reveal-progress" id="reveal-progress"></div>
-  <div id="revealed-card"></div>
-  <div class="reveal-actions">
-   <button class="secondary" onclick="closeOpening()">Close</button>
-   <button class="primary" id="open-action" onclick="startPackAnimation()">Open Pack</button>
-  </div>
- </div>
-</div>
-
-<!-- Card detail -->
-<div class="modal" id="detail-modal" onclick="if(event.target===this)closeDetail()">
- <div class="modal-box">
-  <div class="modal-top"><h2>Card Details</h2><button class="close" onclick="closeDetail()">✕</button></div>
-  <div id="detail-content"></div>
- </div>
 </div>
 
 <script>
+const SAVE_KEY="pokevault_complete_v3";
 const START_COINS=200000000000000;
-const PACK_COST=2500;
-const SAVE_KEY="pokevault_reference_design_v1";
+const PACK_COST=1;
+const rarityOrder={
+  "Common":1,"Uncommon":2,"Rare":3,"Double Rare":4,
+  "Ultra Rare":5,"Illustration Rare":6,
+  "Special Illustration Rare":7,"Secret Rare":8
+};
 
 const packs=[
- ["Mega Evolution Base","🌌","#23517a","#6b3b9b","Mega Evolution"],
- ["Phantasmal Flames","🔥","#8b302d","#482044","Fire and shadow"],
- ["Ascended Heroes","⚡","#31518a","#904e9a","Heroic Pokémon"],
- ["Delta Reign","🐉","#235d69","#57377d","Dragon discoveries"],
- ["Scarlet & Violet Base","🌈","#743c83","#315d9c","Paldea adventure"],
- ["Prismatic Evolutions","💎","#286a79","#783b8e","Eevee and friends"],
- ["Journey Together","🧭","#28654e","#365c9d","Trainer partnerships"],
- ["Black Bolt","⚡","#242b61","#4c6fa4","Lightning discoveries"],
- ["White Flare","✨","#71418b","#b46b83","Bright discoveries"],
- ["Evolving Skies","☁️","#28618d","#74488e","Explore the skies"],
- ["Brilliant Stars","⭐","#5b408c","#a15b4c","Brilliant Pokémon"],
- ["Crown Zenith","👑","#73502e","#51417d","A royal collection"],
- ["Hidden Fates","💠","#246b77","#4c397e","Shiny discoveries"],
- ["Cosmic Eclipse","🌙","#2c3e7c","#70458d","Cosmic adventures"],
- ["Evolutions","🌀","#42558d","#ac713a","Classic collection"],
- ["Legendary Treasures","🏆","#896a2e","#50447e","Legendary discoveries"],
- ["Base Set","🎴","#28677d","#394779","Classic-inspired pack"],
- ["Team Rocket","🚀","#333047","#813b50","Shadow collection"]
-];
-
-const types=["Grass","Fire","Water","Lightning","Psychic","Fighting","Darkness","Metal","Dragon","Colorless","Fairy"];
-const typeMap={grass:"Grass",fire:"Fire",water:"Water",electric:"Lightning",psychic:"Psychic",fighting:"Fighting",dark:"Darkness",steel:"Metal",dragon:"Dragon",fairy:"Fairy",normal:"Colorless",flying:"Colorless",bug:"Grass",rock:"Fighting",ground:"Fighting",ghost:"Psychic",ice:"Water",poison:"Psychic"};
-const rarityOrder={"3-Star Immersive Rare":9,"2-Star Special Illustration":8,"1-Star Illustration":7,Shiny:6,Legendary:5,"Ultra Rare":4,Rare:3,Uncommon:2,Common:1};
-
-const trainers=[
- ["Professor's Research","Professor's Research"],
- ["Pokémon Center Lady","Pokémon Center Lady"],
- ["Boss's Orders","Boss's Orders"],["Nemona","Nemona"],
- ["Arven","Arven"],["Iono","Iono"]
-];
-const items=[
- ["Potion","Potion"],["Poké Ball","Poké Ball"],["Rare Candy","Rare Candy"],
- ["Ultra Ball","Ultra Ball"],["Switch","Switch"],["Nest Ball","Nest Ball"]
+ ["Mega Evolution","🧬","#9d70ff","#34205e"],
+ ["Phantasmal Flames","🔥","#ff704f","#6b173d"],
+ ["Ascended Heroes","🌟","#f6b84d","#563477"],
+ ["Prismatic Evolutions","💎","#67d8ed","#44317f"],
+ ["Surging Sparks","⚡","#f6dc54","#b04d25"],
+ ["Twilight Masquerade","🎭","#a76ce8","#3b205e"],
+ ["Temporal Forces","⏳","#6cc8c9","#254c70"],
+ ["Paldean Fates","✨","#f8a8d2","#623c9c"],
+ ["151 Collection","🔴","#fa725e","#6d2946"],
+ ["Obsidian Flames","🌋","#f28a54","#512044"],
+ ["Paradox Rift","🌀","#7b9aff","#3b286d"],
+ ["Scarlet & Violet","🌺","#e9829c","#593a86"],
+ ["Crown Zenith","👑","#e7c56b","#48346e"],
+ ["Silver Tempest","🌪️","#81b8ed","#3b347c"],
+ ["Lost Origin","🌌","#a37ce9","#34255f"],
+ ["Astral Radiance","☄️","#8cbbf3","#384b8b"],
+ ["Brilliant Stars","⭐","#f6c86c","#65427c"],
+ ["Fusion Strike","🔮","#a78af3","#3d367f"]
 ];
 
 let state=loadState();
 let selectedPack=null;
+let packsRemaining=0;
 let pendingCards=[];
 let revealIndex=0;
-let openedPack=false;
+let openingBusy=false;
+let sessionId=0;
+let openedCountThisPurchase=0;
 
 function loadState(){
- try{
-  const x=JSON.parse(localStorage.getItem(SAVE_KEY));
-  if(x&&Array.isArray(x.cards))return x;
- }catch(e){}
- return {coins:START_COINS,cards:[],discovered:[],opened:0};
+  try{
+    const saved=JSON.parse(localStorage.getItem(SAVE_KEY));
+    if(saved && typeof saved.coins==="number") return saved;
+  }catch(e){}
+  return {coins:START_COINS,cards:[],discovered:[],opened:0};
 }
 function save(){localStorage.setItem(SAVE_KEY,JSON.stringify(state))}
-function money(n){return Number(n).toLocaleString("en-US")}
+function fmt(n){return Number(n).toLocaleString("en-US")}
 function updateCoins(){
- document.getElementById("coin-count").textContent=money(state.coins);
- document.getElementById("pack-balance").textContent=money(state.coins);
+  document.getElementById("coin-count").textContent=fmt(state.coins);
+  document.getElementById("home-cards").textContent=state.cards.length;
+  document.getElementById("home-dex").textContent=state.discovered.length;
+  document.getElementById("home-packs").textContent=state.opened;
+  document.getElementById("dex-count").textContent=state.discovered.length;
 }
-function escapeHTML(s){
- return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function showPage(id,button){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  if(button)button.classList.add("active");
+  if(id==="collection")renderCollection();
+  if(id==="dex")renderDex();
 }
-function showPage(id){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
- if(id==="collection")renderCollection();
- if(id==="pokedex")renderDex();
- if(id==="packs")updateCoins();
-}
-document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
-
-function packHTML(p,i){
- return `<div class="pack-card" onclick="choosePack(${i})">
-  <div class="pack-picture" style="--light:${p[2]};--dark:${p[3]}">
-   <div class="pack-symbol">${p[1]}</div>
-  </div>
-  <h3>${escapeHTML(p[0])}</h3><p>${escapeHTML(p[4])}</p>
-  <div class="pack-info"><b>10 cards</b><b>🪙 ${money(PACK_COST)}</b></div>
- </div>`;
+function updatePrice(){
+  const q=Number(document.getElementById("quantity").value);
+  document.getElementById("price-display").textContent=
+    "Total: "+fmt(q*PACK_COST)+" Pikachu Coin"+(q===1?"":"s");
 }
 function renderPacks(){
- document.getElementById("all-packs").innerHTML=packs.map(packHTML).join("");
- document.getElementById("featured-packs").innerHTML=packs.slice(0,4).map(packHTML).join("");
+  const grid=document.getElementById("pack-grid");
+  grid.innerHTML="";
+  packs.forEach((p,i)=>{
+    const div=document.createElement("div");
+    div.className="pack-card";
+    div.innerHTML=`
+      <div class="pack-art" style="--light:${p[2]};--dark:${p[3]}">
+        <span class="pack-symbol">${p[1]}</span><small>POKÉVAULT</small>
+      </div>
+      <h3>${p[0]}</h3>
+      <p>10 cards per pack</p>
+      <p class="pack-cost">1 Pikachu Coin / pack</p>
+      <button class="btn primary" style="width:100%;margin-top:8px">Choose Pack</button>`;
+    div.querySelector("button").onclick=()=>buyPacks(i);
+    div.onclick=e=>{if(e.target.tagName!=="BUTTON")buyPacks(i)};
+    grid.appendChild(div);
+  });
 }
-function choosePack(i){
- if(state.coins<PACK_COST){alert("You don't have enough coins.");return}
- selectedPack=packs[i];
- state.coins-=PACK_COST;save();updateCoins();
- pendingCards=[];revealIndex=0;openedPack=false;
- document.getElementById("opening-title").textContent=selectedPack[0];
- document.getElementById("pack-symbol").textContent=selectedPack[1];
- document.getElementById("pack-name").textContent=selectedPack[0];
- document.getElementById("pack-front").style.setProperty("--light",selectedPack[2]);
- document.getElementById("pack-front").style.setProperty("--dark",selectedPack[3]);
- document.getElementById("pack-stage").className="pack-stage";
- document.getElementById("opening-message").textContent="Your booster pack is ready!";
- document.getElementById("reveal-progress").textContent="";
- document.getElementById("revealed-card").innerHTML="";
- document.getElementById("open-action").disabled=false;
- document.getElementById("open-action").textContent="Open Pack";
- document.getElementById("opening-modal").classList.add("show");
+function buyPacks(i){
+  if(openingBusy)return;
+  const quantity=Number(document.getElementById("quantity").value);
+  const total=quantity*PACK_COST;
+  if(state.coins<total){alert("Not enough Pikachu Coins!");return}
+  selectedPack=packs[i];
+  packsRemaining=quantity;
+  openedCountThisPurchase=0;
+  state.coins-=total;
+  save();updateCoins();
+  sessionId++;
+  document.getElementById("opening-title").textContent=selectedPack[0];
+  document.getElementById("opening-message").textContent=
+    quantity+" pack"+(quantity===1?"":"s")+" purchased. Get ready!";
+  document.getElementById("big-symbol").textContent=selectedPack[1];
+  const big=document.getElementById("big-pack");
+  big.style.setProperty("--light",selectedPack[2]);
+  big.style.setProperty("--dark",selectedPack[3]);
+  document.getElementById("opening-modal").classList.add("show");
+  document.getElementById("reveal-area").innerHTML="";
+  document.getElementById("progress").textContent="";
+  pendingCards=[];revealIndex=0;
+  setAction("Open Pack",startPack);
 }
-const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-
-async function startPackAnimation(){
- if(openedPack)return;
- openedPack=true;
- const stage=document.getElementById("pack-stage");
- document.getElementById("open-action").disabled=true;
- document.getElementById("opening-message").textContent="Opening your booster...";
- stage.classList.add("spinning");
- await wait(1750);
- stage.classList.remove("spinning");
- stage.classList.add("opening");
- await wait(750);
- stage.classList.add("hidden");
- document.getElementById("opening-message").textContent="Your cards are being revealed!";
- pendingCards=[];
- for(let i=0;i<10;i++){
-  const card=await generateCard();
-  pendingCards.push(card);
-  state.cards.push(card);
-  if(card.kind==="Pokémon"&&!state.discovered.includes(card.uid)){
-   state.discovered.push(card.uid);
+function setAction(label,fn,disabled=false){
+  const btn=document.getElementById("action-button");
+  btn.textContent=label;btn.onclick=fn;btn.disabled=disabled;
+}
+function wait(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+async function startPack(){
+  if(openingBusy||!selectedPack||packsRemaining<=0)return;
+  openingBusy=true;
+  const mySession=sessionId;
+  const stage=document.getElementById("big-pack");
+  document.getElementById("reveal-area").innerHTML="";
+  document.getElementById("progress").textContent="";
+  setAction("Opening...",()=>{},true);
+  document.getElementById("opening-message").textContent="Your pack is spinning...";
+  stage.classList.remove("opening","spinning");
+  void stage.offsetWidth;
+  stage.classList.add("spinning");
+  await wait(1500);
+  if(mySession!==sessionId)return;
+  stage.classList.remove("spinning");
+  stage.classList.add("opening");
+  document.getElementById("opening-message").textContent="Opening your cards...";
+  await wait(650);
+  if(mySession!==sessionId)return;
+  stage.style.visibility="hidden";
+  pendingCards=[];
+  for(let i=0;i<10;i++){
+    const card=await generateCard(selectedPack[0],i);
+    if(mySession!==sessionId)return;
+    pendingCards.push(card);
+    state.cards.push(card);
+    if(card.kind==="Pokémon"&&!state.discovered.includes(card.name)){
+      state.discovered.push(card.name);
+    }
+    save();
+    document.getElementById("opening-message").textContent=
+      "Preparing your cards... "+(i+1)+"/10";
   }
-  save();
- }
- state.opened++;
- save();
- revealIndex=0;
- document.getElementById("open-action").disabled=false;
- document.getElementById("open-action").textContent="Reveal first card";
- document.getElementById("open-action").onclick=revealNext;
+  state.opened++;
+  save();updateCoins();
+  revealIndex=0;openingBusy=false;
+  document.getElementById("opening-message").textContent="Your cards are ready! Reveal them one at a time.";
+  document.getElementById("progress").textContent="Pack "+(openedCountThisPurchase+1)+" of "+(openedCountThisPurchase+packsRemaining);
+  setAction("Reveal first card",revealNext);
 }
-async function getPokemon(){
- const id=1+Math.floor(Math.random()*1025);
- const res=await fetch("https://pokeapi.co/api/v2/pokemon/"+id);
- if(!res.ok)throw Error("Pokémon unavailable");
- const p=await res.json();
- const raw=p.types[0].type.name;
- const type=typeMap[raw]||"Colorless";
- const name=p.name.split("-").map(x=>x[0].toUpperCase()+x.slice(1)).join(" ");
- const cardArt=await findCardArt(name);
- const bodyArt=p.sprites.other?.["official-artwork"]?.front_default||p.sprites.front_default||"";
- const rarity=rollRarity();
- return {
-  uid:"pk-"+id,kind:"Pokémon",name,type,rarity,
-  image:cardArt||"",bodyArt,
-  hp:60+Math.floor(Math.random()*180),
-  number:String(id).padStart(3,"0"),
-  attack:"Powerful Impact",damage:30+Math.floor(Math.random()*130),
-  set:selectedPack[0]
- };
+async function getCardList(name){
+  try{
+    const url="https://api.tcgdex.net/v2/en/cards?name="+encodeURIComponent(name);
+    const res=await fetch(url);
+    if(!res.ok)return [];
+    const data=await res.json();
+    return Array.isArray(data)?data:[];
+  }catch(e){return []}
 }
-function rollRarity(){
- const n=Math.random();
- if(n<.003)return "3-Star Immersive Rare";
- if(n<.015)return "2-Star Special Illustration";
- if(n<.04)return "1-Star Illustration";
- if(n<.085)return "Shiny";
- if(n<.14)return "Legendary";
- if(n<.23)return "Ultra Rare";
- if(n<.46)return "Rare";
- if(n<.72)return "Uncommon";
- return "Common";
+async function getPokemonData(){
+  const id=Math.floor(Math.random()*1025)+1;
+  try{
+    const res=await fetch("https://pokeapi.co/api/v2/pokemon/"+id);
+    if(!res.ok)throw new Error();
+    const p=await res.json();
+    const name=p.name.charAt(0).toUpperCase()+p.name.slice(1);
+    const art=p.sprites.other["official-artwork"].front_default||p.sprites.front_default;
+    return {name,art,hp:Math.max(30,(p.stats.find(s=>s.stat.name==="hp")?.base_stat||50)*2),id};
+  }catch(e){
+    return {name:"Pikachu",art:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",hp:120,id:25};
+  }
 }
-async function findCardArt(name){
- try{
-  const url="https://api.tcgdex.net/v2/en/cards?name="+encodeURIComponent(name);
-  const res=await fetch(url);
-  if(!res.ok)return "";
-  const list=await res.json();
-  const exact=list.find(x=>x.name?.toLowerCase()===name.toLowerCase()&&x.image);
-  const result=exact||list.find(x=>x.image);
-  return result?.image?result.image+"/high.webp":"";
- }catch(e){return ""}
+function chooseRarity(){
+  const r=Math.random();
+  if(r<.42)return "Common";
+  if(r<.69)return "Uncommon";
+  if(r<.88)return "Rare";
+  if(r<.945)return "Double Rare";
+  if(r<.975)return "Ultra Rare";
+  if(r<.99)return "Illustration Rare";
+  if(r<.997)return "Special Illustration Rare";
+  return "Secret Rare";
 }
-async function findSpecialArt(name){
- try{
-  const res=await fetch("https://api.tcgdex.net/v2/en/cards?name="+encodeURIComponent(name));
-  if(!res.ok)return "";
-  const list=await res.json();
-  const match=list.find(x=>x.name?.toLowerCase()===name.toLowerCase()&&x.image)||list.find(x=>x.image);
-  return match?.image?match.image+"/high.webp":"";
- }catch(e){return ""}
+async function findRealCard(name){
+  const list=await getCardList(name);
+  const match=list.find(c=>c.name?.toLowerCase()===name.toLowerCase()&&c.image)
+    ||list.find(c=>c.image);
+  if(!match)return null;
+  let image=match.image;
+  if(image&&!image.endsWith(".webp"))image+="/high.webp";
+  return {image,id:match.id};
 }
-async function generateCard(){
- const n=Math.random();
- if(n<.74){
-  try{return await getPokemon()}catch(e){return fallbackPokemon()}
- }
- if(n<.85){
-  const t=pick(trainers);
-  return {uid:"tr-"+t[0],kind:"Trainer",name:t[0],type:"Trainer",rarity:rollRarity(),image:await findSpecialArt(t[1]),set:selectedPack[0]};
- }
- if(n<.95){
-  const t=pick(items);
-  return {uid:"it-"+t[0],kind:"Item",name:t[0],type:"Item",rarity:rollRarity(),image:await findSpecialArt(t[1]),set:selectedPack[0]};
- }
- const type=pick(types);
- return {uid:"en-"+type,kind:"Energy",name:type+" Energy",type,rarity:"Common",image:"",set:selectedPack[0]};
+const trainerNames=["Professor's Research","Misty","Pikachu","Iono","Nemona","Arven","Penny","Lillie"];
+const itemNames=["Poké Ball","Rare Candy","Potion","Super Rod","Switch","Ultra Ball","Nest Ball","Energy Retrieval"];
+async function generateCard(packName,index){
+  const roll=Math.random();
+  if(roll<.11){
+    const name=trainerNames[Math.floor(Math.random()*trainerNames.length)];
+    const real=await findRealCard(name);
+    return makeCard(name,"Trainer",chooseRarity(),real?.image||"",real?.id||"");
+  }
+  if(roll<.21){
+    const name=itemNames[Math.floor(Math.random()*itemNames.length)];
+    const real=await findRealCard(name);
+    return makeCard(name,"Item",chooseRarity(),real?.image||"",real?.id||"");
+  }
+  const p=await getPokemonData();
+  const real=await findRealCard(p.name);
+  const rarity=chooseRarity();
+  return {
+    uid:"pokemon-"+p.id,
+    name:p.name,kind:"Pokémon",rarity,
+    image:real?.image||p.art,
+    hp:p.hp,attack:"Special Attack",
+    pack:packName,cardId:real?.id||"",
+    fallback:p.art,created:Date.now()+index
+  };
 }
-function fallbackPokemon(){
- const type=pick(types);
- return {uid:"mystery-"+Math.random(),kind:"Pokémon",name:"Mystery Pokémon",type,rarity:"Common",image:"",bodyArt:"",hp:100,attack:"Mystery Attack",damage:50,set:selectedPack?.[0]||""};
+function makeCard(name,kind,rarity,image,id){
+  return {
+    uid:kind+"-"+name.toLowerCase().replace(/[^a-z0-9]/g,"-"),
+    name,kind,rarity,image,
+    hp:"—",attack:kind==="Trainer"?"Support effect":"Item effect",
+    pack:selectedPack[0],cardId:id,
+    created:Date.now()+Math.random()
+  };
 }
-function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
-
+function cardFallback(c){
+  if(c.fallback)return c.fallback;
+  return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
+}
 function revealNext(){
- if(revealIndex>=pendingCards.length)return;
- const c=pendingCards[revealIndex++];
- document.getElementById("revealed-card").innerHTML=makeLargeCard(c);
- document.getElementById("reveal-progress").textContent=`CARD ${revealIndex} OF 10`;
- document.getElementById("opening-message").textContent=c.rarity.includes("Star")||c.rarity==="Shiny"?"✦ A special card!":"You discovered a card!";
- const btn=document.getElementById("open-action");
- if(revealIndex===10){
-  btn.textContent="Finish pack";
-  btn.onclick=finishPack;
- }else{
-  btn.textContent="Reveal next card";
-  btn.onclick=revealNext;
- }
+  if(openingBusy||revealIndex>=pendingCards.length)return;
+  const c=pendingCards[revealIndex++];
+  const area=document.getElementById("reveal-area");
+  area.innerHTML="";
+  const div=document.createElement("div");
+  div.className="reveal-card";
+  const img=document.createElement("img");
+  img.src=c.image||cardFallback(c);
+  img.alt=c.name+" card";
+  img.onerror=()=>{img.onerror=null;img.src=cardFallback(c)};
+  const title=document.createElement("h3");
+  title.textContent=c.name;
+  const details=document.createElement("p");
+  details.className="tag";
+  details.textContent=c.kind+" · "+c.rarity;
+  const pack=document.createElement("p");
+  pack.className="muted";
+  pack.textContent=c.hp!=="—"?"HP "+c.hp:"From "+c.pack;
+  div.append(img,title,details,pack);
+  area.appendChild(div);
+  document.getElementById("progress").textContent="Card "+revealIndex+" of 10";
+  if(revealIndex<10){
+    setAction("Reveal next card",revealNext);
+  }else{
+    setAction(packsRemaining>1?"Finish pack & continue":"Finish pack",finishCurrentPack);
+  }
 }
-function finishPack(){
- document.getElementById("opening-modal").classList.remove("show");
- showPage("collection");
+function finishCurrentPack(){
+  openedCountThisPurchase++;
+  packsRemaining--;
+  pendingCards=[];revealIndex=0;
+  document.getElementById("reveal-area").innerHTML="";
+  document.getElementById("progress").textContent="";
+  const stage=document.getElementById("big-pack");
+  stage.style.visibility="visible";
+  stage.classList.remove("opening","spinning");
+  if(packsRemaining>0){
+    document.getElementById("opening-title").textContent=selectedPack[0];
+    document.getElementById("opening-message").textContent=
+      "Pack complete! "+packsRemaining+" pack"+(packsRemaining===1?"":"s")+" remaining.";
+    setAction("Open next pack",startPack);
+  }else{
+    document.getElementById("opening-message").textContent=
+      "Amazing! You opened all "+openedCountThisPurchase+" packs!";
+    setAction("Finish",closeModal);
+  }
 }
-function closeOpening(){
- document.getElementById("opening-modal").classList.remove("show");
- document.getElementById("open-action").onclick=startPackAnimation;
- renderCollection();renderDex();
-}
-function makeLargeCard(c){
- if(c.image)return `<div class="reveal-card"><img src="${escapeHTML(c.image)}" alt="${escapeHTML(c.name)} card artwork" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-fallback" style="display:none"><div class="fallback-name">${escapeHTML(c.name)}</div><div class="fallback-art">✨</div><div class="fallback-details">${escapeHTML(c.rarity)} · ${escapeHTML(c.type||c.kind)}</div></div></div>`;
- return `<div class="reveal-card">${fallbackCard(c)}</div>`;
-}
-function fallbackCard(c){
- return `<div class="card-fallback">
- <div><div class="fallback-name">${escapeHTML(c.name)}</div><div class="fallback-details">${escapeHTML(c.type||c.kind)} · ${escapeHTML(c.hp?c.hp+" HP":c.rarity)}</div></div>
- <div class="fallback-art">${c.bodyArt?`<img src="${escapeHTML(c.bodyArt)}" style="max-width:100%;max-height:100%;object-fit:contain">`:"✨"}</div>
- <div class="fallback-details">${escapeHTML(c.attack||c.kind)}　${c.damage||""}<br>${escapeHTML(c.rarity||"Common")}</div>
- </div>`;
-}
-function cardView(c,count){
- const image=c.image
- ?`<img class="card-image" loading="lazy" src="${escapeHTML(c.image)}" alt="${escapeHTML(c.name)} full card" onerror="this.outerHTML='${fallbackCard(c).replace(/'/g,"&#39;")}'">`
- :fallbackCard(c);
- return `<div class="card-tile" onclick="showDetail('${encodeURIComponent(c.uid)}')">
- ${image}
- <span class="rarity-tag">${escapeHTML(c.rarity||"Common")}</span>
- ${count>1?`<span class="duplicate">×${count}</span>`:""}
- <div class="card-caption"><span>${escapeHTML(c.name)}</span><span>${escapeHTML(c.type||c.kind)}</span></div>
- <div class="card-set">${escapeHTML(c.set||"PokéVault")}</div>
- </div>`;
+function closeModal(){
+  if(openingBusy)return;
+  sessionId++;
+  openingBusy=false;
+  selectedPack=null;
+  packsRemaining=0;
+  pendingCards=[];revealIndex=0;
+  document.getElementById("opening-modal").classList.remove("show");
+  document.getElementById("big-pack").style.visibility="visible";
+  document.getElementById("big-pack").classList.remove("opening","spinning");
+  renderCollection();renderDex();updateCoins();
 }
 function renderCollection(){
- const q=document.getElementById("search").value.toLowerCase();
- const kind=document.getElementById("kind-filter").value;
- const type=document.getElementById("type-filter").value;
- const rarity=document.getElementById("rarity-filter").value;
- const sort=document.getElementById("sort-filter").value;
- const counts={};
- state.cards.forEach(c=>counts[c.uid]=(counts[c.uid]||0)+1);
- let unique=[...new Map(state.cards.map(c=>[c.uid,c])).values()];
- let cards=unique.filter(c=>
-  (c.name+" "+c.set+" "+c.number).toLowerCase().includes(q)&&
-  (kind==="all"||c.kind===kind)&&
-  (type==="all"||c.type===type)&&
-  (rarity==="all"||c.rarity===rarity)
- );
- if(sort==="rarity")cards.sort((a,b)=>(rarityOrder[b.rarity]||0)-(rarityOrder[a.rarity]||0));
- if(sort==="name")cards.sort((a,b)=>a.name.localeCompare(b.name));
- if(sort==="newest")cards.reverse();
- document.getElementById("collection-total").textContent=state.cards.length+" cards";
- document.getElementById("collection-small").textContent=unique.length+" unique · "+state.opened+" packs opened";
- document.getElementById("shown-count").textContent=cards.length+" unique cards shown";
- document.getElementById("card-grid").innerHTML=cards.length?cards.map(c=>cardView(c,counts[c.uid])).join(""):`<div class="empty"><h2>Your collection is waiting!</h2><p>Open a booster pack to discover your first cards.</p></div>`;
+  const grid=document.getElementById("collection-grid");
+  const search=(document.getElementById("search")?.value||"").toLowerCase();
+  const kind=document.getElementById("kind-filter")?.value||"All";
+  const rarity=document.getElementById("rarity-filter")?.value||"All";
+  const sort=document.getElementById("sort-filter")?.value||"new";
+  let cards=state.cards.filter(c=>
+    c.name.toLowerCase().includes(search)&&
+    (kind==="All"||c.kind===kind)&&
+    (rarity==="All"||c.rarity===rarity)
+  );
+  if(sort==="rarity")cards.sort((a,b)=>(rarityOrder[b.rarity]||0)-(rarityOrder[a.rarity]||0));
+  if(sort==="name")cards.sort((a,b)=>a.name.localeCompare(b.name));
+  if(sort==="new")cards.reverse();
+  document.getElementById("collection-count").textContent=
+    cards.length+" card copies · "+state.cards.length+" total copies";
+  grid.innerHTML="";
+  if(!cards.length){grid.innerHTML='<div class="empty">No cards found yet. Open some booster packs!</div>';return}
+  const counts={};
+  state.cards.forEach(c=>counts[c.uid]=(counts[c.uid]||0)+1);
+  cards.forEach(c=>{
+    const tile=document.createElement("div");
+    tile.className="card-tile";
+    const img=document.createElement("img");
+    img.src=c.image||cardFallback(c);
+    img.alt=c.name;
+    img.onerror=()=>{img.onerror=null;img.src=cardFallback(c)};
+    const name=document.createElement("h4");name.textContent=c.name;
+    const tag=document.createElement("p");tag.textContent=c.kind+" · "+c.rarity;
+    const count=document.createElement("span");count.className="count";count.textContent="×"+counts[c.uid];
+    tile.append(count,img,name,tag);
+    grid.appendChild(tile);
+  });
 }
-function showDetail(encoded){
- const uid=decodeURIComponent(encoded);
- const c=state.cards.find(x=>x.uid===uid);
- if(!c)return;
- const count=state.cards.filter(x=>x.uid===uid).length;
- document.getElementById("detail-content").innerHTML=`
- <div style="display:flex;justify-content:center;margin:15px">${c.image?`<img class="detail-image" src="${escapeHTML(c.image)}" alt="${escapeHTML(c.name)}">`:fallbackCard(c)}</div>
- <h2>${escapeHTML(c.name)}</h2>
- <p class="detail-info">${escapeHTML(c.kind)} · ${escapeHTML(c.type||"Special")} · ${escapeHTML(c.rarity||"Common")}</p>
- <p class="detail-info">Set: ${escapeHTML(c.set||"PokéVault")}<br>Copies collected: ${count}</p>
- ${c.rarity==="3-Star Immersive Rare"?`<p>✦ Special immersive card</p>`:""}`;
- document.getElementById("detail-modal").classList.add("show");
-}
-function closeDetail(){document.getElementById("detail-modal").classList.remove("show")}
 function renderDex(){
- const unique=[...new Map(state.cards.filter(c=>c.kind==="Pokémon").map(c=>[c.uid,c])).values()];
- document.getElementById("dex-total").textContent=unique.length;
- document.getElementById("dex-grid").innerHTML=unique.length?unique.map(c=>`
- <div class="dex-item">
- ${c.bodyArt?`<img src="${escapeHTML(c.bodyArt)}" alt="${escapeHTML(c.name)}">`:c.image?`<img src="${escapeHTML(c.image)}" alt="${escapeHTML(c.name)}">`:`<div style="font-size:55px">❔</div>`}
- <b>${escapeHTML(c.name)}</b><div class="subtle">${escapeHTML(c.type)}</div>
- </div>`).join(""):`<div class="empty">Discover Pokémon by opening booster packs!</div>`;
+  const grid=document.getElementById("dex-list");
+  grid.innerHTML="";
+  if(!state.discovered.length){
+    grid.innerHTML='<div class="empty">Your Pokédex is empty. Collect Pokémon cards to discover Pokémon!</div>';return;
+  }
+  state.discovered.forEach(name=>{
+    const card=state.cards.find(c=>c.kind==="Pokémon"&&c.name===name);
+    const tile=document.createElement("div");tile.className="card-tile";
+    const img=document.createElement("img");img.src=card?.image||cardFallback(card||{});
+    img.onerror=()=>{img.onerror=null;img.src=cardFallback(card||{})};
+    const h=document.createElement("h4");h.textContent=name;
+    const p=document.createElement("p");p.textContent="Discovered";
+    tile.append(img,h,p);grid.appendChild(tile);
+  });
 }
-
 renderPacks();
+updatePrice();
 updateCoins();
 renderCollection();
 renderDex();
